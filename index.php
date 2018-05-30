@@ -1,7 +1,6 @@
 <?
     error_reporting(E_ERROR|E_WARNING|E_PARSE|E_NOTICE);
     ini_set('display errors', 1);
-
     echo "<h2>Задание 1</h2><br>";
 //    $date=array(1,2,3,4,5);
 //    print_r($date);
@@ -29,10 +28,10 @@
     sort($date);
     print_r($date);
     $selected=array_pop($date);
-    echo "<br>".date('d.m.Y h:i:s',$selected). "<br>";
+    echo "<br>".date('e, d.m.Y h:i:s',$selected). "<br>";
     print_r($date);
     date_default_timezone_set('America/New_York');
-    echo "<br>".date('d.m.Y h:i:s',$selected);
+    echo "<br>".date('e, d.m.Y h:i:s',$selected);
 
 
 
