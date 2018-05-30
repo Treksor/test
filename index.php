@@ -2,48 +2,39 @@
     error_reporting(E_ERROR|E_WARNING|E_PARSE|E_NOTICE);
     ini_set('display errors', 1);
 
-    echo"<h2>Задание 1</h2>";
-    $name='Igor';
-    $age=27;
-    echo "Меня зовут $name. Мне $age лет.";
+    echo "<h2>Задание 1</h2><br>";
+//    $date=array(1,2,3,4,5);
+//    print_r($date);
+//    mt_srand(time());
+    $date=array(mt_rand(),mt_rand(),mt_rand(),mt_rand(),mt_rand());
     echo "<br>";
-    echo 'Меня зовут '.$name. '. Мне '.$age. ' лет.';
-    unset($name, $age);
-//    echo $name, $age;
-//    Undefined variable: name; Undefined variable: age;
+//    $day1=date('d',$date[0]);
+//    $day2=date('d',$date[1]);
+//    $day3=date('d',$date[2]);
+//    $day4=date('d',$date[3]);
+//    $day5=date('d',$date[4]);
+    echo $day1=date('d',$date[0]),', ';
+    echo $day2=date('d',$date[1]),', ';
+    echo $day3=date('d',$date[2]),', ';
+    echo $day4=date('d',$date[3]),', ';
+    echo $day5=date('d',$date[4]), '  ';
+    echo 'минимальный день:'.min($day1,$day2,$day3,$day4,$day5),"<br>";
+    echo $month1=date('m',$date[0]),', ';
+    echo $month2=date('m',$date[1]),', ';
+    echo $month3=date('m',$date[2]),', ';
+    echo $month4=date('m',$date[3]),', ';
+    echo $month5=date('m',$date[4]), '  ';
+    echo 'максимальный месяц:'.max($month1,$month2,$month3,$month4,$month5),"<br>";
+
+    sort($date);
+    print_r($date);
+    $selected=array_pop($date);
+    echo "<br>".date('d.m.Y h:i:s',$selected). "<br>";
+    print_r($date);
+    date_default_timezone_set('America/New_York');
+    echo "<br>".date('d.m.Y h:i:s',$selected);
 
 
-    echo "<h2>Задание 2</h2>";
-    define('GOROD', 'Novosibirsk');
-    if (GOROD) {
-        echo GOROD;
-    }else {
-        echo 'No constanta';
-    }
-//    define ('GOROD', 'Moscow');
-//    constant GOROD already defined
-
-    echo "<h2>Задание 3</h2>";
-    $book=array('Title'=>('Пробуждение Левиафана'),'Author'=>'Джеймсом Кори','Pages'=>'448');
-    echo "Довольно давно я прочитал книгу $book[Title], написанную автором $book[Author], я осилил все $book[Pages]
-    страниц, мне очень понравилось";
-
-
-    echo "<h2>Задание 4</h2>";
-    $book1=array('Title'=>('Пробуждение Левиафана'),'Author'=>'Джеймсом Кори','Pages'=>'448');
-    $book2=array('Title'=>('Война Калибана'),'Author'=>'Джеймсом Кори','Pages'=>'576');
-    $books=array($book1,$book2);
-    $sum=$book1['Pages']+$book2['Pages'];
-//    print_r($books[0][Title]);
-//    print_r($books[1][Pages]);
-
-    //предполагаю, что по заданию нужно записать через массив books
-    echo "Довольно давно я прочитал книги {$books[0]['Title']} и {$books[1]['Title']}(на самом деле нет), написанные автором 
-    {$books[0]['Author']}, в сумме я осилил {$books[0]['Pages']}+{$books[1]['Pages']} страниц <br>(на самом деле вторую книгу
-    я даже не начал, к сожалению)<br><br>";
-
-    //но как-то криво получается и сумму я не знаю как записать, поэтому второй вариант =)
-    echo "Я прочитал книги $book1[Title] и $book2[Title], написанные автором $book1[Author], в сумме я осилил $sum страниц.";
 
 
     ?>
