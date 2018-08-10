@@ -105,7 +105,7 @@ discount = '. mt_rand(0,2).';
         return $text;
     }
 
-
+     $count=0;
      $disc='disc';
      echo 'Вы заказали:<br>';
      echo item($order1,$storage1,$price1),'<br>';
@@ -118,14 +118,15 @@ discount = '. mt_rand(0,2).';
         exit;
     }
 
-     echo $disc($item1,$order1,$price1,$discount1),'<br>';
-     echo $disc($item2,$order2,$price2,$discount2),'<br>';
+     echo ($order1<$storage1)? "{$disc($item1,$order1,$price1,$discount1)}<br>":'';
+     echo ($order2<$storage2)? "{$disc($item2,$order2,$price2,$discount2)}<br>":'';
      if (sale($order3,$storage3))  {
          echo '<h2>',sale($order3,$storage3),'</h2>';
          echo $disc($item3,$order3,$price3,3),'<br>';
      }
      else{
-         echo $disc($item3,$order3,$price3,$discount3),'<br>';
+         echo ($order3<$storage3)? "{$disc($item3,$order3,$price3,$discount3)}<br>":'';
+         echo '<br>';
      }
 
 
@@ -134,33 +135,7 @@ discount = '. mt_rand(0,2).';
 
 
 
-//     echo '<h2>Вам повезло!</h2><h3>Сегодня у нас действуют скидки!</h3><br>';
-//     echo $discount1,':',$order1,':',$price1,'<br>';
-//     echo discount($discount1,$order1,$price1);
-//     echo '<br>';
-//     echo $fullprice;
-//     echo '<br>';
-//     echo $count;
-//     echo '<br>';
-//     echo 'ПЕРВАЯ ФУНКЦИЯ ПОСЧИТАНА';
-//     echo '<br>';
-//
-//
-//     echo '<br>';
-//     echo $fullprice;
-//     echo '<br>';
-//     echo $count;
-//     echo '<br>';
-//     echo 'Вторая ФУНКЦИЯ ПОСЧИТАНА';
-//     echo '<br>';
-//
-//     echo '<br>';
-//     echo $fullprice;
-//     echo '<br>';
-//     echo $count;
-//     echo '<br>';
-//     echo 'Третья ФУНКЦИЯ ПОСЧИТАНА';
-//     echo '<br>';
+
 
 
 
