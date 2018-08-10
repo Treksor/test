@@ -107,6 +107,7 @@ discount = '. mt_rand(0,2).';
 
      $count=0;
      $disc='disc';
+     $fullprice=0;
      echo 'Вы заказали:<br>';
      echo item($order1,$storage1,$price1),'<br>';
      echo item($order2,$storage2,$price2,$item2),'<br>';
