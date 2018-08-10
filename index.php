@@ -7,45 +7,24 @@
 цена ='. mt_rand(1,10).';
 количество заказано = '. mt_rand(1,10).';
 остаток на складе = '. mt_rand(0,10).';
-discount = '. mt_rand(0,2).'0%;
+discount = '. mt_rand(0,2).';
     
 [одежда детская куртка синияя синтепон]
 цена = '. mt_rand(1,10).';
 количество заказано = '. mt_rand(1,10).';
 остаток на складе = '. mt_rand(0,10).';
-discount = '. mt_rand(0,2).'0%;
+discount = '. mt_rand(0,2).';
     
 [игрушка детская велосипед]
 цена = '. mt_rand(1,10).';
 количество заказано = '. mt_rand(1,10).';
 остаток на складе = '. mt_rand(0,10).';
-discount = '. mt_rand(0,2).'0%;
+discount = '. mt_rand(0,2).';
     
 ';
     $bd = parse_ini_string($ini_string,true);
 //    print_r($bd);
-//    foreach ($bd as $item => $massiv){
-//        foreach($massiv as $param => $value){
-//            echo "[$item]:[$param]:[$value]";
-//            echo '<br>';
-//        }
-//    }
-//    foreach ($bd as $i =>$array) {
-//        ${"array{$i}"} = $array;
-//        print_r($array);
-//    }
-//    echo $bd['игрушка мягкая мишка белый']['цена'];
-//    echo 'Вы заказали:<br>';
-//    echo 'Игрушка мягкая мишка белый';
-//    echo '      в колличестве:',$bd['игрушка мягкая мишка белый']['количество заказано'],
-//    'по цене',$bd['игрушка мягкая мишка белый']['цена'],
-//    'общая стоимость составит:',$bd['игрушка мягкая мишка белый']['количество заказано']*$bd['игрушка мягкая мишка белый']['цена'];
-//    if ($bd['игрушка мягкая мишка белый']['количество заказано']>$bd['игрушка мягкая мишка белый']['остаток на складе']){
-//        echo $bd['игрушка мягкая мишка белый']['количество заказано'];
-//    }
-//        else {
-//        echo 'извините, на складе только ',$bd['игрушка мягкая мишка белый']['остаток на складе'];
-//        }
+
      $item1='Игрушка мягкая мишка белый';
      $item2='Одежда детская куртка синяя синтепон';
      $item3='Игрушка детская велосипед';
@@ -66,75 +45,122 @@ discount = '. mt_rand(0,2).'0%;
      $discount2=$bd['одежда детская куртка синияя синтепон']['discount'];
      $discount3=$bd['игрушка детская велосипед']['discount'];
 
-//     function items($item1='Игрушка мягкая мишка белый',$item2='Одежда детская куртка синяя синтепон',
-//                    $item3='Игрушка детская велосипед'){
-//         echo "$item1<br>$item2<br>$item3";
-//     }
-    function item1($item1='Игрушка мягкая мишка белый'){
-        global $order1,$storage1,$price1,$fullprice,$count;
-        echo "$item1, в колличестве $order1 ед. товара";
-        if ($order1>$storage1){
-            echo ", но к сожалению у нас на складе только $storage1 ед. товара. ";
+
+    function item($order,$storage,$price,$item='Игрушка мягкая мишка белый'){
+        global $fullprice,$count;
+        $result= "$item, в колличестве $order ед. товара";
+        if ($storage==0) {
+            $result.= ", но, к сожалению, данный товар закончился на складе";
+        }
+        elseif ($order>$storage){
+            $result.= ", но, к сожалению, у нас на складе только $storage ед. товара. ";
         }
         else {
-            echo ". Cтоимость 1ед. товара составляет $price1$";
-            $fullprice=($order1*$price1);
-            $count=$order1;
+            $result.= ". Cтоимость 1ед. товара составляет $price$";
+            $fullprice+=($order*$price);
+            $count+=$order;
         }
+        return $result;
     }
 
-    function item2($item2='Одежда детская куртка синяя синтепон'){
-        global $order2,$storage2,$price2,$fullprice,$count;
-        echo "$item2, в колличестве $order2 ед. товара";
-        if ($order2>$storage2){
-           echo ", но к сожалению у нас на складе только $storage2 ед. товара. ";
-       }
+
+    function sale($order,$storage){
+        if ($order>=3 & $storage>$order){
+            $special='За покупку трех и более велосипедов вы получаете скидку 30%';
+        }
         else {
-           echo ". Cтоимость 1ед. товара составляет $price2$";
-           $fullprice+=($order2*$price2);
-           $count+=$order2;
-       }
+            $special='';
+        }
+        return $special;
     }
 
-    function item3($item3='Игрушка мягкая мишка белый'){
-        global $order3,$storage3,$price3,$fullprice,$count;
-        echo "$item3, в колличестве $order3 ед. товара";
-        if ($order3>$storage3){
-           echo ", но к сожалению у нас на складе только $storage3 ед. товара. ";
-       }
-        else {
-           echo ". Cтоимость 1ед. товара составляет $price3$";
-           $fullprice+=($order3*$price3);
-           $count+=$order3;
-       }
+
+
+
+    function disc($item,$order,$price,$discount=''){
+            global $fullprice;
+            switch($discount){
+            case '1':{
+                $profit=(($order*$price)/100)*10;
+                $text= "скидка на $item стоставляет 10%, вы экэномите $profit$";
+                $fullprice-=$profit;
+                break;
+            }
+            case '2':{
+                $profit=(($order*$price)/100)*20;
+                $text= "скидка на $item стоставляет 20%, вы экэномите $profit$";
+                $fullprice-=$profit;
+                break;
+            }
+                case '3':{
+                 $profit=(($order*$price)/100)*30;
+                 $text= "скидка на $item стоставляет 30%, вы экэномите $profit$";
+                 $fullprice-=$profit;
+                }
+                break;
+            default:
+                $text= '';
+                break;
+        }
+        return $text;
     }
 
+
+     $disc='disc';
      echo 'Вы заказали:<br>';
-     item1();
-     echo '<br>';
-     echo $fullprice;
-     echo '<br>';
-     echo $count;
-     echo '<br>';
-     echo 'ПЕРВАЯ ФУНКЦИЯ ПОСЧИТАНА';
-     echo '<br>';
+     echo item($order1,$storage1,$price1),'<br>';
+     echo item($order2,$storage2,$price2,$item2),'<br>';
+     echo item($order3,$storage3,$price3,$item3),'<br>';
 
-     item2();
-     echo '<br>';
-     echo $fullprice;
-     echo '<br>';
-     echo $count;
-     echo '<br>';
-     echo 'Вторая ФУНКЦИЯ ПОСЧИТАНА';
-     echo '<br>';
-     item3();
-     echo '<br>';
-     echo $fullprice;
-     echo '<br>';
-     echo $count;
-     echo '<br>';
-     echo 'Третья ФУНКЦИЯ ПОСЧИТАНА';
-     echo '<br>';
+     echo "Итого вы заказали $count вещей на сумму $fullprice$",'<br>','<br>';
+
+    if ($count==0){
+        exit;
+    }
+
+     echo $disc($item1,$order1,$price1,$discount1),'<br>';
+     echo $disc($item2,$order2,$price2,$discount2),'<br>';
+     if (sale($order3,$storage3))  {
+         echo '<h2>',sale($order3,$storage3),'</h2>';
+         echo $disc($item3,$order3,$price3,3),'<br>';
+     }
+     else{
+         echo $disc($item3,$order3,$price3,$discount3),'<br>';
+     }
+
+
+     echo "Итого вы заказали $count вещей. Со скидкой сумма заказа составляет $fullprice$",'<br>';
+
+
+
+
+//     echo '<h2>Вам повезло!</h2><h3>Сегодня у нас действуют скидки!</h3><br>';
+//     echo $discount1,':',$order1,':',$price1,'<br>';
+//     echo discount($discount1,$order1,$price1);
+//     echo '<br>';
+//     echo $fullprice;
+//     echo '<br>';
+//     echo $count;
+//     echo '<br>';
+//     echo 'ПЕРВАЯ ФУНКЦИЯ ПОСЧИТАНА';
+//     echo '<br>';
+//
+//
+//     echo '<br>';
+//     echo $fullprice;
+//     echo '<br>';
+//     echo $count;
+//     echo '<br>';
+//     echo 'Вторая ФУНКЦИЯ ПОСЧИТАНА';
+//     echo '<br>';
+//
+//     echo '<br>';
+//     echo $fullprice;
+//     echo '<br>';
+//     echo $count;
+//     echo '<br>';
+//     echo 'Третья ФУНКЦИЯ ПОСЧИТАНА';
+//     echo '<br>';
 
 
 
