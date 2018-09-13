@@ -34,6 +34,8 @@ discount = '. mt_rand(0,2).';
 //    'Стоимость со скидкой общая'=>0
 //    );
 
+    $fullpricediscSUM=0;
+    $fullpriceSUM=0;
     function order($order, $storage)                //проверка заказ <-> остаток
     {
         if ($storage == 0 || $order>$storage) {
@@ -71,7 +73,7 @@ discount = '. mt_rand(0,2).';
              $count=$item['остаток на складе'];
          }
 
-         if ($key='игрушка детская велосипед'&$item['количество заказано']>=3){
+         if ($key=='игрушка детская велосипед'&$item['количество заказано']>=3){
              $discount=$item['цена']*0.7;
          }
          else{
@@ -80,15 +82,39 @@ discount = '. mt_rand(0,2).';
 
          $fullprice=$item['цена']*$count;
          $fullpricedisc=$discount*$count;
+//         $fullpriceSUM+=$fullprice;
+//         $fullpricediscSUM+=$fullpricedisc;
 
-         $out=array('Наименование'=>$key,'Вы закзали'=>$item['количество заказано'],'На складе'=>$item['остаток на складе'],
-             'Цена'=>$item['цена'],'Цена со скидкой'=>$discount,'Общая стоимость'=>$fullprice,'Общая стоимость со скидкой'=>$fullpricedisc);
+         $out=array('Наименование'=>$key,
+             'Вы закзали'=>$item['количество заказано'],
+             'На складе'=>$item['остаток на складе'],
+             'Цена'=>$item['цена'],
+             'Цена со скидкой'=>$discount,
+             'Общая стоимость'=>$fullprice,
+             'Общая стоимость со скидкой'=>$fullpricedisc);
          $output[]=$out;
 
 
 
     }
-print_r($output);
+//    $output[]=$fullpriceSUM;
+//    $output[]=$fullpricediscSUM;
+//    print_r($output);
+    echo '<table border="1">';
+    echo '<td><strong>Наименование</strong></td>
+          <td><strong>Вы заказали</strong></td>
+          <td><strong>На складе</strong></td>
+          <td><strong>Цена</strong></td>
+          <td><strong>Цена со скидкой</strong></td>
+          <td><strong>Общая стоимость</strong></td>
+          <td><strong>Общая стоимость со скидкой</strong></td>';
+    foreach ($output as $value) {
+        echo "<tr>";
+        foreach ($value as $key => $data)
+            echo "<td>".$data."</td>";
+            echo "</tr>";
+    }
+    echo "</table>";
 
 
 
