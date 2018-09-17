@@ -36,6 +36,14 @@ discount = '. mt_rand(0,2).';
 
     $fullpricediscSUM=0;
     $fullpriceSUM=0;
+    $notice=0;
+
+    function notice($notice){
+        if ($notice){
+            echo "<h3>Поздравляем! Вы получаете скидку 30% на велосипеды</h3>";
+        }
+    }
+
     function order($order, $storage)                //проверка заказ <-> остаток
     {
         if ($storage == 0 || $order>$storage) {
@@ -75,6 +83,7 @@ discount = '. mt_rand(0,2).';
 
          if ($key=='игрушка детская велосипед'&$item['количество заказано']>=3){
              $discount=$item['цена']*0.7;
+             $notice=1;
          }
          else{
              $discount=discount($item['discount'],$item['цена']);
@@ -82,8 +91,8 @@ discount = '. mt_rand(0,2).';
 
          $fullprice=$item['цена']*$count;
          $fullpricedisc=$discount*$count;
-//         $fullpriceSUM+=$fullprice;
-//         $fullpricediscSUM+=$fullpricedisc;
+         $fullpriceSUM+=$fullprice;
+         $fullpricediscSUM+=$fullpricedisc;
 
          $out=array('Наименование'=>$key,
              'Вы закзали'=>$item['количество заказано'],
@@ -114,7 +123,13 @@ discount = '. mt_rand(0,2).';
             echo "<td>".$data."</td>";
             echo "</tr>";
     }
-    echo "</table>";
+    echo "<tr><td><td><td><td><td>
+            <td>$fullpriceSUM</td>
+            <td>$fullpricediscSUM</td>
+            </td></td></td></td></td></tr>
+            </table><br>";
+
+    notice ($notice);
 
 
 
