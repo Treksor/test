@@ -24,8 +24,8 @@ function Listnewsbynumber($news){
     echo $news[$_GET['id']];
 }
 
-if (isset($_GET)) {
-    if ($_GET['id'] <= $count) {
+if (isset($_GET['id'])) {
+    if ($_GET['id'] < $count) {
         Listnewsbynumber($news);
     } else {
         Listallnews($news);
