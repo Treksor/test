@@ -25,21 +25,18 @@ function listNewsByNumber($news){
 }
 
 
+//if (isset($_GET['id']))
 
 
+if (!isset($_GET['id'])) {
+    header("HTTP/1.0 404 Not Found");}
+    elseif (!is_numeric($_GET['id'])){
+    echo '?id=<тут должно быть число>';}
+    elseif ($_GET['id'] < $count) {
+        listNewsByNumber($news);}
+    else {
+        listAllNews($news);}
 
-if (isset($_GET['id']) & is_numeric($_GET['id'])) {
-    if ($_GET['id'] < $count) {
-        listNewsByNumber($news);
-    } else {
-        listAllNews($news);
-    }
-} else {
-    echo 'Введите в адресную строку ?id=<номер новости>';
-}
 
 
 ?>
-
-
-
