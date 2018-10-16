@@ -14,29 +14,29 @@ $news = 'Четыре новосибирские компании вошли в 
 $news = explode("\n", $news);
 
 $count=count($news);
-function Listallnews($news){
+function listAllNews($news){
     foreach ($news as $value){
         echo $value,'<br>';
     }
 }
 
-function Listnewsbynumber($news){
+function listNewsByNumber($news){
     echo $news[$_GET['id']];
 }
 
-if (isset($_GET['id'])) {
+
+
+
+
+if (isset($_GET['id']) & is_numeric($_GET['id'])) {
     if ($_GET['id'] < $count) {
-        Listnewsbynumber($news);
+        listNewsByNumber($news);
     } else {
-        Listallnews($news);
+        listAllNews($news);
     }
 } else {
-    header("HTTP/1.0 404 Not Found");
+    echo 'Введите в адресную строку ?id=<номер новости>';
 }
-
-
-
-
 
 
 ?>
