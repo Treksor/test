@@ -14,29 +14,35 @@ $news = 'Четыре новосибирские компании вошли в 
 $news = explode("\n", $news);
 
 $count=count($news);
-function listAllNews($news){
-    foreach ($news as $value){
-        echo $value,'<br>';
-    }
-}
 
 function listNewsByNumber($news){
-    echo $news[$_GET['id']];
+    echo $news[$_POST['id']];
 }
 
 
-//if (isset($_GET['id']))
-
-
-if (!isset($_GET['id'])) {
-    header("HTTP/1.0 404 Not Found");}
-    elseif (!is_numeric($_GET['id'])){
-    echo '?id=<тут должно быть число>';}
-    elseif ($_GET['id'] < $count) {
-        listNewsByNumber($news);}
-    else {
-        listAllNews($news);}
-
-
+if (!isset($_POST['id'])) {
+    echo "необходимо ввести число";
+} elseif (!is_numeric($_POST['id'])) {
+    echo "необходимо ввести число";
+} elseif ($_POST['id'] < $count & ($_POST['id'])>0) {
+    listNewsByNumber($news);
+} else {
+    echo "число должно быть не больше $count, но и не быть отрицательным";
+}
 
 ?>
+
+<!--<html>-->
+<!--<body>-->
+
+<form method="POST">
+    <br>Введите номер новости
+    <p>
+        <input type="text" name="id" value="">
+    </p>
+    <p><input type="submit"></p>
+</form>
+
+<!--</body>-->
+<!--</html>-->
+
