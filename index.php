@@ -2,47 +2,35 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display errors', 1);
 
-$news = 'Четыре новосибирские компании вошли в сотню лучших работодателей
-Животное, а не водоросль: сибирские учёные нашли скелет у древних организмов в Арктике
-Семья из Новосибирска выпустила открытки с апокалиптичными видами города
-Квартиры в стильных новостройках продают по цене аренды
-Теперь не рухнет: у 30-метровой геодезической вышки заварили опоры
-Новосибирским военным устроят проверку
-Из-за аварии на Сибиряков-Гвардейцев встали троллейбусы
-«Сибирь» проиграла десятую игру подряд
-Путин назначил алтайскую судью председателем нового новосибирского суда';
-$news = explode("\n", $news);
 
-$count=count($news);
-
-function listNewsByNumber($news){
-    echo $news[$_POST['id']];
-}
-
-
-if (!isset($_POST['id'])) {
-    echo "необходимо ввести число";
-} elseif (!is_numeric($_POST['id'])) {
-    echo "необходимо ввести число";
-} elseif ($_POST['id'] < $count & ($_POST['id'])>0) {
-    listNewsByNumber($news);
-} else {
-    echo "число должно быть не больше $count, но и не быть отрицательным";
-}
 
 ?>
 
-<!--<html>-->
-<!--<body>-->
-
 <form method="POST">
-    <br>Введите номер новости
-    <p>
-        <input type="text" name="id" value="">
-    </p>
+    <p><input type="radio" name="answer" value="Person">Частное лицо
+        <input type="radio" name="answer" value="Company">Компания
+    <p>Ваше имя: <input type="text"><br>
+        Электронная почта: <input type="email">
+    <p><input type="checkbox"> Я не хочу получать вопросы по объявлению по e-mail
+    <p>Номер телефона: <input type="text">
+    <p>Город
+    <select name="select">
+        <option selected value="s1">Новосибирск</option>
+        <option value="s2">Луна</option>
+        <option value="s3">Марс</option>
+        <option value="s4">Жопа</option>
+    </select><br>
+    Категория
+    <select name="select">
+        <option selected value="s1">Религию нужно искоренить</option>
+        <option value="s2">Космическое парно</option>
+        <option value="s3">Вечное</option>
+        <option value="s4">Перекати-поле</option>
+    </select>
+    <p>Название объявления<input type="text">
+    <p>Описание объявления: <textarea style="resize: none;" rows="10" cols="50" ></textarea>
+    <p>Цена <input type="text" value="0" size="5">руб.
     <p><input type="submit"></p>
 </form>
 
-<!--</body>-->
-<!--</html>-->
 
