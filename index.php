@@ -52,11 +52,10 @@ if (array_key_exists('data',$_SESSION) & !empty($_SESSION['data'])){
     $allData=$_SESSION['data'];
 }
 
-print_r($_SESSION); echo '<br><br><br>';
-print_r($allData); echo '<br><br><br>';
-print_r($item);
-//if (isset($_GET['open'])){
-//    if (!empty($allData)){
+//print_r($_SESSION); echo '<br><br><br>';
+//print_r($allData); echo '<br><br><br>';
+//print_r($item);
+
 
 ?>
 
