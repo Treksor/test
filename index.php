@@ -27,8 +27,8 @@ $item = array(
     'price' => '',
     'submit' => ''
 );
-$cities = array('Новосибирск','Луна','Параша','Жопа','Нибиру');
-$categories=array('Космос','Гавно','Еще гавно','Еще больше гавна');
+$cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
+$categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна');
 if (!empty($_GET)){
     if (isset($_GET['delete'])){
         unset($_SESSION['data'][$_GET['delete']]);
@@ -39,7 +39,7 @@ if (!empty($_GET)){
 if (!empty($_GET)){
     if (isset($_GET['open'])){
         $item=$_SESSION['data'][$_GET['open']];
-        header('location: http:/index.php');
+//        header('location: http:/index.php');
     }
 }
 
@@ -48,37 +48,32 @@ if (isset($_POST['submit'])){
     $_SESSION['data'][]=$_POST;
 }
 
-//if (array_key_exists('unset',$_POST)){
-//    unset($_SESSION['data']);
-//}
-
 if (array_key_exists('data',$_SESSION) & !empty($_SESSION['data'])){
     $allData=$_SESSION['data'];
-//    print_r($allData);
 }
 
-//print_r($_SESSION);
 print_r($_SESSION); echo '<br><br><br>';
-print_r($allData);
+print_r($allData); echo '<br><br><br>';
+print_r($item);
 //if (isset($_GET['open'])){
 //    if (!empty($allData)){
-//        foreach ($allData as $key =>$value){
 
 ?>
 
 <link rel="stylesheet" type="text/css" href="styles.css">
 
 <form method="POST">
-<!--    <p><input type="radio" name="clientType" value="Person" id="Person"--><?php //$item['clientType'] === 'person'? echo 'checked': ''?><!--><label for="Person">Частное лицо</label>-->
-        <input type="radio" name="clientType" value="Company" id="Company"><label for="Company">Компания</label>
+    <p><input type="radio" name="clientType" value="Person" id="Person"<?php if ($item['clientType'] === 'Person'){ echo 'checked'; }else {'';}?>><label for="Person">Частное лицо</label>
+        <input type="radio" name="clientType" value="Company" id="Company"<?php if ($item['clientType'] === 'Company'){ echo 'checked';} else{ '';}?>><label for="Company">Компания</label>
     <p><label class="left-label" for="name">Ваше имя</label> <input name="name" type="text" id="name" value=<?php echo $item['name'];?>><br>
         <label class="left-label" for="mail">Электронная почта </label><input name="mail" type="email" id="mail" value=<?php echo $item['mail'];?>>
-    <p><input type="checkbox" name="check" id="samayaglavnayagalka"> <label for="samayaglavnayagalka">Я не хочу получать вопросы по объявлению по e-mail</label>
+    <p><input type="checkbox" name="check" id="samayaglavnayagalka" <?php if ($item['check'] === 'on'){ echo 'checked';} else {'';}?>> <label for="samayaglavnayagalka">Я не хочу получать вопросы по объявлению по e-mail</label>
     <p><label class="left-label" for="tnumber">Номер телефона: </label><input name="phoneNumber" type="text" id="tnumber" value=<?php echo $item['phoneNumber'];?>>
     <p><label class="left-label" for="town">Город</label>
         <select name="town" id="town">
-            <?php foreach ($cities as $city){?>
-            <option name="town"><?php echo $city;}?></option>
+            <?php if (!empty($item['town'])){?><option name="town"><?php echo $item['town'];} else {?></option>
+                <?php foreach ($cities as $city){?>
+            <option name="town"><?php echo $city;}}?></option>
 <!--            <option name="town" value="s1">Новосибирск</option>-->
 <!--            <option name="town" value="s2">Луна</option>-->
 <!--            <option name="town" value="s3">Марс</option>-->
@@ -86,8 +81,9 @@ print_r($allData);
         </select><br>
         <label class="left-label" for="lulz">Категория</label>
         <select name="category" id="lulz">
+            <?php if (!empty($item['category'])){?><option name="category"><?php echo $item['category'];} else {?></option>
             <?php foreach ($categories as $category){?>
-            <option name="category"><?php echo $category;}?></option>
+            <option name="category"><?php echo $category;}}?></option>
 <!--            <option name="category" value="s1">Космическое парно</option>-->
 <!--            <option name="category" value="s2">Вечное</option>-->
 <!--            <option name="category" value="s3">Перекати-поле</option>-->
@@ -96,7 +92,6 @@ print_r($allData);
     <p><label class="left-label" for="notes">Описание товара</label><textarea name="notes" id="notes" style="resize:none;"><?php echo $item['notes'];?></textarea>
     <p><label class="left-label" for="price">Цена </label><input name="price" type="text" size="5" id="price" value=<?php echo $item['price'];?>>руб.
     <p><input type="submit" name="submit" value="submit"></p>
-<!--    <p><input type="submit" name="unset" value="unset"</p>-->
 </form>
 
 <table cellpadding="10px">
