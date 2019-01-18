@@ -82,13 +82,13 @@ if (isset($_POST['submit'])){
     <p><label class="left-label" for="town">Город</label>
         <select name="town" id="town">
                 <?php foreach ($cities as $city){?>
-            <option name="town" <?php if ($item['town']=$city){ ?> selected><?php } echo $city;}?></option>
+            <option name="town" <?php if ($item['town']==$city){ ?> selected<?php } ?>><?php echo $city;}?></option>
 
         </select><br>
         <label class="left-label" for="lulz">Категория</label>
         <select name="category" id="lulz">
             <?php foreach ($categories as $category){?>
-            <option name="category" <?php if ($item['category']=$category){ ?> selected><?php } echo $category;}?></option>
+            <option name="category" <?php if ($item['category']==$category){ ?> selected <?php } ?> ><?php  echo $category;}?></option>
 
         </select>
     <p><label class="left-label" for="nazvanieobyavy">Название объявления </label><input name="caption" type="text" id="nazvanieobyavy" value=<?php echo $item['caption'];?>>
