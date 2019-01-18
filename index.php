@@ -2,7 +2,7 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display errors', 1);
 session_start();
-
+$_POST['check']='';
 
 $allData = array(Array('clientType' => '',
     'name' => '',
