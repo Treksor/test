@@ -1,4 +1,4 @@
-<?
+<?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display errors', 1);
 session_start();
@@ -26,9 +26,9 @@ $item = array(
     'caption' => '',
     'notes' => '',
     'price' => '',
-    'submit' => ''
+    'submit' => '',
+    'id'=>''
 );
-$item1=$item;
 $cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
 $categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна','Телега говна с горкой');
 if (!empty($_GET)){
@@ -44,27 +44,26 @@ if (array_key_exists('data',$_SESSION) & !empty($_SESSION['data'])){
 
 if (!empty($_GET)){
     if (isset($_GET['open'])){
-        $id=$_GET['open'];?>
-        <input type="hidden" name="id" value=<?php echo $id; ?>>
-        <?php $item=$allData[$_GET['open']];
+        $item=$allData[$_GET['open']];
+        $item['id']=$_GET['open'];
     }
 }
 
 if (isset($_POST['submit'])){
-    if ($id>=0){
-        $_SESSION['data'][$id]=$_POST;
-        $item=$item1;
+    if ($item['id']>=0){
+        $_SESSION['data'][$item['id']]=$_POST;
+        $item=0;
     }
     else {
-    $_SESSION['data'][]=$_POST;}
+        $_SESSION['data'][]=$_POST;}
     $allData=$_SESSION['data'];
 //    header('location: http:/index.php');
 }
 
-print_r($_SESSION); echo '<br><br><br>';
-print_r($allData); echo '<br><br><br>';
+//print_r($_SESSION); echo '<br><br><br>';
+//print_r($allData); echo '<br><br><br>';
 //print_r($item); echo '<br><br><br>';
-print_r($_POST);echo '<br><br><br>';
+//print_r($_POST);echo '<br><br><br>';
 
 
 
@@ -73,6 +72,7 @@ print_r($_POST);echo '<br><br><br>';
 <link rel="stylesheet" type="text/css" href="styles.css">
 
 <form method="POST">
+    <input type="hidden" name="id" value=<?php echo $item['id']; ?>>
     <p><input type="radio" name="clientType" value="Person" id="Person"<?php if ($item['clientType'] === 'Person'){ echo 'checked'; }?>><label for="Person">Частное лицо</label>
         <input type="radio" name="clientType" value="Company" id="Company"<?php if ($item['clientType'] === 'Company'){ echo 'checked';} ?>><label for="Company">Компания</label>
     <p><label class="left-label" for="name">Ваше имя</label> <input name="name" type="text" id="name" value=<?php echo $item['name'];?>><br>
@@ -81,16 +81,14 @@ print_r($_POST);echo '<br><br><br>';
     <p><label class="left-label" for="tnumber">Номер телефона: </label><input name="phoneNumber" type="text" id="tnumber" value=<?php echo $item['phoneNumber'];?>>
     <p><label class="left-label" for="town">Город</label>
         <select name="town" id="town">
-            <?php if (!empty($item['town'])){?><option name="town"><?php echo $item['town'];}?></option>
                 <?php foreach ($cities as $city){?>
-            <option name="town"><?php echo $city;}?></option>
+            <option name="town" <?php if ($item['town']=$city){ ?> selected><?php } echo $city;}?></option>
 
         </select><br>
         <label class="left-label" for="lulz">Категория</label>
         <select name="category" id="lulz">
-            <?php if (!empty($item['category'])){?><option name="category"><?php echo $item['category'];}?></option>
             <?php foreach ($categories as $category){?>
-            <option name="category"><?php echo $category;}?></option>
+            <option name="category" <?php if ($item['category']=$category){ ?> selected><?php } echo $category;}?></option>
 
         </select>
     <p><label class="left-label" for="nazvanieobyavy">Название объявления </label><input name="caption" type="text" id="nazvanieobyavy" value=<?php echo $item['caption'];?>>
