@@ -29,6 +29,7 @@ $item = array(
     'submit' => '',
     'id'=>''
 );
+$item1=$item;
 $cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
 $categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна','Телега говна с горкой');
 if (!empty($_GET)){
@@ -52,12 +53,12 @@ if (!empty($_GET)){
 if (isset($_POST['submit'])){
     if ($item['id']>0){
         $_SESSION['data'][$item['id']-1]=$_POST;
-        $item=0;
+        $item=$item1;
     }
     else {
         $_SESSION['data'][]=$_POST;}
     $allData=$_SESSION['data'];
-//    header('location: http:/index.php');
+    header('location: http:/index.php');
 }
 
 //print_r($_SESSION); echo '<br><br><br>';
