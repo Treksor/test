@@ -3,6 +3,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display errors', 1);
 session_start();
 
+
 $allData = array(Array('clientType' => '',
     'name' => '',
     'mail' => '',
@@ -27,6 +28,7 @@ $item = array(
     'price' => '',
     'submit' => ''
 );
+$item1=$item;
 $cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
 $categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна','Телега говна с горкой');
 if (!empty($_GET)){
@@ -36,34 +38,34 @@ if (!empty($_GET)){
     }
 }
 
-
-if (isset($_POST['submit'])){
-    $_SESSION['data'][]=$_POST;
-}
-
-if (isset($_POST['back'])){
-    header('location: http:/index.php');
-}
-
-if (isset($_POST['edit'])& isset($_GET['open'])){
-    $_SESSION['data'][$_GET['open']]=$_POST;
-}
-
-if (!empty($_GET)){
-    if (isset($_GET['open'])){
-        $item=$_SESSION['data'][$_GET['open']];
-    }
-}
-
 if (array_key_exists('data',$_SESSION) & !empty($_SESSION['data'])){
     $allData=$_SESSION['data'];
 }
 
-//print_r($_SESSION); echo '<br><br><br>';
-//print_r($allData); echo '<br><br><br>';
-//print_r($item);
-//print_r($_POST);echo '<br><br><br>';
-//print_r($_SESSION['data']);
+if (!empty($_GET)){
+    if (isset($_GET['open'])){
+        $id=$_GET['open'];?>
+        <input type="hidden" name="id" value=<?php echo $id; ?>>
+        <?php $item=$allData[$_GET['open']];
+    }
+}
+
+if (isset($_POST['submit'])){
+    if ($id>=0){
+        $_SESSION['data'][$id]=$_POST;
+        $item=$item1;
+    }
+    else {
+    $_SESSION['data'][]=$_POST;}
+    $allData=$_SESSION['data'];
+//    header('location: http:/index.php');
+}
+
+print_r($_SESSION); echo '<br><br><br>';
+print_r($allData); echo '<br><br><br>';
+//print_r($item); echo '<br><br><br>';
+print_r($_POST);echo '<br><br><br>';
+
 
 
 ?>
@@ -82,26 +84,19 @@ if (array_key_exists('data',$_SESSION) & !empty($_SESSION['data'])){
             <?php if (!empty($item['town'])){?><option name="town"><?php echo $item['town'];}?></option>
                 <?php foreach ($cities as $city){?>
             <option name="town"><?php echo $city;}?></option>
-<!--            <option name="town" value="s1">Новосибирск</option>-->
-<!--            <option name="town" value="s2">Луна</option>-->
-<!--            <option name="town" value="s3">Марс</option>-->
-<!--            <option name="town" value="s4">Жопа</option>-->
+
         </select><br>
         <label class="left-label" for="lulz">Категория</label>
         <select name="category" id="lulz">
             <?php if (!empty($item['category'])){?><option name="category"><?php echo $item['category'];}?></option>
             <?php foreach ($categories as $category){?>
             <option name="category"><?php echo $category;}?></option>
-<!--            <option name="category" value="s1">Космическое парно</option>-->
-<!--            <option name="category" value="s2">Вечное</option>-->
-<!--            <option name="category" value="s3">Перекати-поле</option>-->
+
         </select>
     <p><label class="left-label" for="nazvanieobyavy">Название объявления </label><input name="caption" type="text" id="nazvanieobyavy" value=<?php echo $item['caption'];?>>
     <p><label class="left-label" for="notes">Описание товара</label><textarea name="notes" id="notes" style="resize:none;"><?php echo $item['notes'];?></textarea>
     <p><label class="left-label" for="price">Цена </label><input name="price" type="text" size="5" id="price" value=<?php echo $item['price'];?>>руб.
-    <p><?php if (!isset($_GET['open'])){?><input type="submit" name="submit" value="submit"><?php }?>
-        <?php if (isset($_GET['open'])){?><input type="submit" name="back" value="back">
-        <input type="submit" name="edit" value="edit"></p><?php }?>
+    <p><input type="submit" name="submit" value="submit">
 </form>
 
 <table cellpadding="10px">
