@@ -45,13 +45,13 @@ if (array_key_exists('data',$_SESSION) & !empty($_SESSION['data'])){
 if (!empty($_GET)){
     if (isset($_GET['open'])){
         $item=$allData[$_GET['open']];
-        $item['id']=$_GET['open'];
+        $item['id']=$_GET['open']+1;
     }
 }
 
 if (isset($_POST['submit'])){
-    if ($item['id']>=0){
-        $_SESSION['data'][$item['id']]=$_POST;
+    if ($item['id']>0){
+        $_SESSION['data'][$item['id']-1]=$_POST;
         $item=0;
     }
     else {
