@@ -27,31 +27,28 @@ $item = array(
     'notes' => '',
     'price' => '',
     'submit' => '',
-    'id'=>''
+    'id'=>'0'
 );
 $item1=$item;
 $cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
 $categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна','Телега говна с горкой');
 
-if (!empty($_COOKIE)){
+if (isset($_COOKIE['data'])){
     $allData=unserialize(($_COOKIE['data']));
 }
 
-if (!empty($_GET)){
-    if (isset($_GET['delete'])){
-        unset($allData[$_GET['delete']]);
-        $val=serialize($allData);
-        setcookie('data',$val,time()+3600*7*24);
-        header('location: ./index.php');
-    }
+if (isset($_GET['delete'])) {
+    unset($allData[$_GET['delete']]);
+    $val = serialize($allData);
+    setcookie('data', $val, time() + 3600 * 7 * 24);
+    header('location: ./index.php');
 }
 
-if (!empty($_GET)){
-    if (isset($_GET['open'])){
-        $item=$allData[$_GET['open']];
-        $item['id']=$_GET['open']+1;
-    }
+if (isset($_GET['open'])) {
+    $item = $allData[$_GET['open']];
+    $item['id'] = $_GET['open'] + 1;
 }
+
 
 if (isset($_POST['submit'])){
     if ($item['id']>0){
