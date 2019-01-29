@@ -33,14 +33,15 @@ $item1=$item;
 $cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
 $categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна','Телега говна с горкой');
 
-if (isset($_COOKIE['data'])){
-    $allData=unserialize(($_COOKIE['data']));
-}
+//if (isset($_COOKIE['data'])){
+$var=file_get_contents('./temp/data.txt');
+$allData=unserialize($var);
+//}
 
 if (isset($_GET['delete'])) {
     unset($allData[$_GET['delete']]);
-    $val = serialize($allData);
-    setcookie('data', $val, time() + 3600 * 7 * 24);
+    $var=serialize($allData);
+    file_put_contents('./temp/data.txt',$var);
     header('location: ./index.php');
 }
 
@@ -58,8 +59,9 @@ if (isset($_POST['submit'])){
     else {
         $allData[]=$_POST;
     }
-    $val=serialize($allData);
-    setcookie('data',$val,time()+3600*7*24);
+    $var=serialize($allData);
+    file_put_contents('./temp/data.txt',$var);
+
     header('location: ./index.php');
 }
 
