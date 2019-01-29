@@ -38,25 +38,33 @@ function checkTheCheck($a){
     }
     return $a;
 }
-
-$file='./temp/data.txt';
-$data=fopen($file,'a+');
-if (filesize($file)>0){
-    $var=fread($data,filesize($file));
-    $allData=unserialize($var);
+function getAds($file='./temp/data.txt'){
+    $data=fopen($file,'r');
+    if (filesize($file)>0){
+        $var=fread($data,filesize($file));
+        $var=unserialize($var);
+    }
+    fclose($data);
+    return $var;
 }
 
-
-
-if (isset($_GET['delete'])) {
-    unset($allData[$_GET['delete']]);
-    $var = serialize($allData);
+function saveAds($var,$file='./temp/data.txt'){
+    $data=fopen($file,'w');
     fwrite($data, $var);
     fclose($data);
+}
+$allData=getAds();
+
+if (isset($_GET['delete'])) {
+//    $allData=getAds();
+    unset($allData[$_GET['delete']]);
+    $var = serialize($allData);
+    saveAds($var);
     header('location: ./index.php');
 }
 
 if (isset($_GET['open'])) {
+//    $allData=getAds();
     $item = $allData[$_GET['open']];
     $item['id'] = $_GET['open'];
 }
@@ -72,9 +80,7 @@ if (isset($_POST['submit'])){
         $allData[]=$itemtosave;
     }
     $var=serialize($allData);
-    fwrite($data,$var);
-    fclose($data);
-
+    saveAds($var);
     header('location: ./index.php');
 }
 
