@@ -78,10 +78,10 @@ if (isset($_POST['submit'])){
     <input type="hidden" name="id" value=<?php echo $item['id']; ?>>
     <p><input type="radio" name="clientType" value="Person" id="Person"<?php if ($item['clientType'] === 'Person'){ echo 'checked'; }?>><label for="Person">Частное лицо</label>
         <input type="radio" name="clientType" value="Company" id="Company"<?php if ($item['clientType'] === 'Company'){ echo 'checked';} ?>><label for="Company">Компания</label>
-    <p><label class="left-label" for="name">Ваше имя</label> <input name="name" type="text" id="name" value=<?php echo $item['name'];?>><br>
-        <label class="left-label" for="mail">Электронная почта </label><input name="mail" type="email" id="mail" value=<?php echo $item['mail'];?>>
+    <p><label class="left-label" for="name">Ваше имя</label> <input name="name" type="text" id="name" value="<?php echo $item['name'];?>"><br>
+        <label class="left-label" for="mail">Электронная почта </label><input name="mail" type="email" id="mail" value="<?php echo $item['mail'];?>">
     <p><input type="checkbox" name="check" id="samayaglavnayagalka" <?php if ($item['check'] === 'on'){ echo 'checked';}?>> <label for="samayaglavnayagalka">Я не хочу получать вопросы по объявлению по e-mail</label>
-    <p><label class="left-label" for="tnumber">Номер телефона: </label><input name="phoneNumber" type="text" id="tnumber" value=<?php echo $item['phoneNumber'];?>>
+    <p><label class="left-label" for="tnumber">Номер телефона: </label><input name="phoneNumber" type="text" id="tnumber" value="<?php echo $item['phoneNumber'];?>">
     <p><label class="left-label" for="town">Город</label>
         <select name="town" id="town">
             <?php foreach ($cities as $city){?>
@@ -94,9 +94,9 @@ if (isset($_POST['submit'])){
             <option name="category" <?php if ($item['category']==$category){ ?> selected <?php } ?> ><?php  echo $category;}?></option>
 
         </select>
-    <p><label class="left-label" for="nazvanieobyavy">Название объявления </label><input name="caption" type="text" id="nazvanieobyavy" value=<?php echo $item['caption'];?>>
+    <p><label class="left-label" for="nazvanieobyavy">Название объявления </label><input name="caption" type="text" id="nazvanieobyavy" value="<?php echo $item['caption'];?>">
     <p><label class="left-label" for="notes">Описание товара</label><textarea name="notes" id="notes" style="resize:none;"><?php echo $item['notes'];?></textarea>
-    <p><label class="left-label" for="price">Цена </label><input name="price" type="text" size="5" id="price" value=<?php echo $item['price'];?>>руб.
+    <p><label class="left-label" for="price">Цена </label><input name="price" type="text" size="5" id="price" value="<?php echo $item['price'];?>">руб.
     <p><input type="submit" name="submit" value="submit">
 </form>
 
