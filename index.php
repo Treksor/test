@@ -1,8 +1,7 @@
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display errors', 1);
-//session_start();
-//$_POST['check']='';
+
 
 //$allData = array(Array('clientType' => '',
 //    'name' => '',
@@ -33,22 +32,27 @@ $item1=$item;
 $cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
 $categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна','Телега говна с горкой');
 
-function checkthecheck($a){
+function checkTheCheck($a){
     if (!array_key_exists('check',$a)){
         $a['check']='';
     }
     return $a;
 }
 
-//if (isset($_COOKIE['data'])){
-$var=file_get_contents('./temp/data.txt');
-$allData=unserialize($var);
-//}
+$file='./temp/data.txt';
+$data=fopen($file,'a+');
+if (filesize($file)>0){
+    $var=fread($data,filesize($file));
+    $allData=unserialize($var);
+}
+
+
 
 if (isset($_GET['delete'])) {
     unset($allData[$_GET['delete']]);
-    $var=serialize($allData);
-    file_put_contents('./temp/data.txt',$var);
+    $var = serialize($allData);
+    fwrite($data, $var);
+    fclose($data);
     header('location: ./index.php');
 }
 
@@ -59,16 +63,17 @@ if (isset($_GET['open'])) {
 
 
 if (isset($_POST['submit'])){
+    $itemtosave=checkTheCheck($_POST);
     if (is_numeric($item['id'])){
-        $allData[$item['id']]=$_POST;
+        $allData[$item['id']]=$itemtosave;
         $item=$item1;
     }
     else {
-//        checkthecheck($_POST);
-        $allData[]=checkthecheck($_POST);
+        $allData[]=$itemtosave;
     }
     $var=serialize($allData);
-    file_put_contents('./temp/data.txt',$var);
+    fwrite($data,$var);
+    fclose($data);
 
     header('location: ./index.php');
 }
