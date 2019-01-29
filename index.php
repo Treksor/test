@@ -27,7 +27,7 @@ $item = array(
     'notes' => '',
     'price' => '',
     'submit' => '',
-    'id'=>'-1'
+    'id'=>''
 );
 $item1=$item;
 $cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
@@ -51,7 +51,7 @@ if (isset($_GET['open'])) {
 
 
 if (isset($_POST['submit'])){
-    if ($item['id']>=0){
+    if (is_numeric($item['id'])){
         $allData[$item['id']]=$_POST;
         $item=$item1;
     }
