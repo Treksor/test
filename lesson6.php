@@ -1,20 +1,20 @@
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display errors', 1);
-//session_start();
+session_start();
 $_POST['check']='';
 
-//$allData = array(Array('clientType' => '',
-//    'name' => '',
-//    'mail' => '',
-//    'check' =>'',
-//    'phoneNumber' => '',
-//    'town' => '',
-//    'category' => '',
-//    'caption' => '',
-//    'notes' => '',
-//    'price' => '',
-//    'submit' => ''));
+$allData = array(Array('clientType' => '',
+    'name' => '',
+    'mail' => '',
+    'check' =>'',
+    'phoneNumber' => '',
+    'town' => '',
+    'category' => '',
+    'caption' => '',
+    'notes' => '',
+    'price' => '',
+    'submit' => ''));
 $item = array(
     'clientType' => 'private',
     'name' => '',
@@ -32,18 +32,15 @@ $item = array(
 $item1=$item;
 $cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
 $categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна','Телега говна с горкой');
-
-if (!empty($_COOKIE)){
-    $allData=unserialize(($_COOKIE['data']));
-}
-
 if (!empty($_GET)){
     if (isset($_GET['delete'])){
-        unset($allData[$_GET['delete']]);
-        $val=serialize($allData);
-        setcookie('data',$val,time()+3600*7*24);
-        header('location: ./index.php');
+        unset($_SESSION['data'][$_GET['delete']]);
+        header('location: .index.php');
     }
+}
+
+if (array_key_exists('data',$_SESSION) & !empty($_SESSION['data'])){
+    $allData=$_SESSION['data'];
 }
 
 if (!empty($_GET)){
@@ -55,21 +52,19 @@ if (!empty($_GET)){
 
 if (isset($_POST['submit'])){
     if ($item['id']>0){
-        $allData[$item['id']-1]=$_POST;
+        $_SESSION['data'][$item['id']-1]=$_POST;
         $item=$item1;
     }
     else {
-        $allData[]=$_POST;
-    }
-    $val=serialize($allData);
-    setcookie('data',$val,time()+3600*7*24);
+        $_SESSION['data'][]=$_POST;}
+    $allData=$_SESSION['data'];
     header('location: ./index.php');
 }
 
 //print_r($_SESSION); echo '<br><br><br>';
 //print_r($allData); echo '<br><br><br>';
-////print_r($item); echo '<br><br><br>';
-//print_r($_COOKIE);echo '<br><br><br>';
+//print_r($item); echo '<br><br><br>';
+//print_r($_POST);echo '<br><br><br>';
 
 
 
@@ -111,7 +106,7 @@ if (isset($_POST['submit'])){
         <td>Имя</td>
     </tr>
     <?php
-    if (!empty($allData)){
+    if (array_key_exists('data',$_SESSION) & !empty($_SESSION['data'])){
         foreach ($allData as $key => $value) {
             ?>
             <tr>
