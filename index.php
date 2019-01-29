@@ -27,7 +27,7 @@ $item = array(
     'notes' => '',
     'price' => '',
     'submit' => '',
-    'id'=>'0'
+    'id'=>'-1'
 );
 $item1=$item;
 $cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
@@ -46,13 +46,13 @@ if (isset($_GET['delete'])) {
 
 if (isset($_GET['open'])) {
     $item = $allData[$_GET['open']];
-    $item['id'] = $_GET['open'] + 1;
+    $item['id'] = $_GET['open'];
 }
 
 
 if (isset($_POST['submit'])){
-    if ($item['id']>0){
-        $allData[$item['id']-1]=$_POST;
+    if ($item['id']>=0){
+        $allData[$item['id']]=$_POST;
         $item=$item1;
     }
     else {

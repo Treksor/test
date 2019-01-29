@@ -1,7 +1,7 @@
 <?
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display errors', 1);
-
+print_r($_COOKIE);
 $aLanguages=array("Slavic"=>array("Russian","Polish","Slovenian"),
     "Germanic"=>array("Swedish","Dutch","English"),
     "Romance"=>array("Italian","Spanish","Romanian")

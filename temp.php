@@ -1,32 +1,133 @@
-<style>
-    .left-label {
-        width: 200px;
-        float:left;
+<?php
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+ini_set('display errors', 1);
+//session_start();
+$_POST['check']='';
+
+$allData = array(Array('clientType' => '',
+    'name' => '',
+    'mail' => '',
+    'check' =>'',
+    'phoneNumber' => '',
+    'town' => '',
+    'category' => '',
+    'caption' => '',
+    'notes' => '',
+    'price' => '',
+    'submit' => ''));
+$item = array(
+    'clientType' => 'private',
+    'name' => '',
+    'mail' => '',
+    'check' =>'on',
+    'phoneNumber' => '',
+    'town' => '',
+    'category' => '',
+    'caption' => '',
+    'notes' => '',
+    'price' => '',
+    'submit' => '',
+    'id'=>'0'
+);
+$item1=$item;
+$cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
+$categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна','Телега говна с горкой');
+if (!empty($_GET)){
+    if (isset($_GET['delete'])){
+        setcookie($_GET['delete'],'',time()-3600*7*24);
+        header('location: ./index.php');
     }
-</style>
+}
+
+//if (array_key_exists('data',$_SESSION) & !empty($_SESSION['data'])){
+//    $allData=$_SESSION['data'];
+//}
+
+if (!empty($_GET)){
+    if (isset($_GET['open'])){
+        $item=unserialize($_COOKIE[$_GET['open']]);
+        $item['id']=$_GET['open']+1;
+    }
+}
+else{
+    if (!empty($_COOKIE)) {
+        $item['id'] = count($_COOKIE) + 1;
+    }
+}
+
+if (isset($_POST['submit'])){
+    if ($item['id']>0){
+        setcookie(($item['id']),$allData,time()-3600*7*24);
+        $allData=serialize(($_POST));
+        setcookie(($item['id']),$allData,time()+3600*7*24);
+        $item=$item1;
+    }
+    else {
+        $allData=serialize(($_POST));
+        setcookie(($item['id']),$allData,time()+3600*7*24);
+    }
+//    $allData=$_COOKIE[$item['id']];
+    header('location: ./index.php');
+}
+
+//print_r($_SESSION); echo '<br><br><br>';
+//print_r($allData); echo '<br><br><br>';
+//print_r($item); echo '<br><br><br>';
+print_r($_COOKIE);echo '<br><br><br>';
+
+
+
+?>
+
+<link rel="stylesheet" type="text/css" href="styles.css">
+
 <form method="POST">
-    <p><input type="radio" name="answer" value="Person" id="Person"><label for="Person">Частное лицо</label>
-        <input type="radio" name="answer" value="Company" id="Company"><label for="Company">Компания</label>
-    <p><label class="left-label" for="name">Ваше имя</label> <input type="text" id="name"><br>
-        <label class="left-label" for="mail">Электронная почта </label><input type="email" id="mail">
-    <p><input type="checkbox" id="samayaglavnayagalka"> <label for="samayaglavnayagalka">Я не хочу получать вопросы по объявлению по e-mail</label>
-    <p><label class="left-label" for="tnumber">Номер телефона: </label><input type="text" id="tnumber">
+    <input type="hidden" name="id" value=<?php echo $item['id']; ?>>
+    <p><input type="radio" name="clientType" value="Person" id="Person"<?php if ($item['clientType'] === 'Person'){ echo 'checked'; }?>><label for="Person">Частное лицо</label>
+        <input type="radio" name="clientType" value="Company" id="Company"<?php if ($item['clientType'] === 'Company'){ echo 'checked';} ?>><label for="Company">Компания</label>
+    <p><label class="left-label" for="name">Ваше имя</label> <input name="name" type="text" id="name" value=<?php echo $item['name'];?>><br>
+        <label class="left-label" for="mail">Электронная почта </label><input name="mail" type="email" id="mail" value=<?php echo $item['mail'];?>>
+    <p><input type="checkbox" name="check" id="samayaglavnayagalka" <?php if ($item['check'] === 'on'){ echo 'checked';}?>> <label for="samayaglavnayagalka">Я не хочу получать вопросы по объявлению по e-mail</label>
+    <p><label class="left-label" for="tnumber">Номер телефона: </label><input name="phoneNumber" type="text" id="tnumber" value=<?php echo $item['phoneNumber'];?>>
     <p><label class="left-label" for="town">Город</label>
-        <select name="select" id="town">
-            <option selected value="s1">Новосибирск</option>
-            <option value="s2">Луна</option>
-            <option value="s3">Марс</option>
-            <option value="s4">Жопа</option>
+        <select name="town" id="town">
+            <?php foreach ($cities as $city){?>
+            <option name="town" <?php if ($item['town']==$city){ ?> selected<?php } ?>><?php echo $city;}?></option>
+
         </select><br>
         <label class="left-label" for="lulz">Категория</label>
-        <select name="select" id="lulz">
-            <option selected value="s1">Религию нужно искоренить</option>
-            <option value="s2">Космическое парно</option>
-            <option value="s3">Вечное</option>
-            <option value="s4">Перекати-поле</option>
+        <select name="category" id="lulz">
+            <?php foreach ($categories as $category){?>
+            <option name="category" <?php if ($item['category']==$category){ ?> selected <?php } ?> ><?php  echo $category;}?></option>
+
         </select>
-    <p><label class="left-label" for="nazvanieobyavy">Название объявления </label><input type="text" id="nazvanieobyavy">
-    <p><label class="left-label" for="notes" style="margin-right: 10px;">Описание товара</label><textarea id="notes" style="resize:none;"></textarea>
-    <p><label class="left-label" for="price">Цена <input type="text" value="0" size="5" id="price">руб.
-    <p><input type="submit"></p>
+    <p><label class="left-label" for="nazvanieobyavy">Название объявления </label><input name="caption" type="text" id="nazvanieobyavy" value=<?php echo $item['caption'];?>>
+    <p><label class="left-label" for="notes">Описание товара</label><textarea name="notes" id="notes" style="resize:none;"><?php echo $item['notes'];?></textarea>
+    <p><label class="left-label" for="price">Цена </label><input name="price" type="text" size="5" id="price" value=<?php echo $item['price'];?>>руб.
+    <p><input type="submit" name="submit" value="submit">
 </form>
+
+<table cellpadding="10px">
+    <tr>
+        <td>Номер</td>
+        <td>Название объявления</td>
+        <td>Цена</td>
+        <td>Имя</td>
+    </tr>
+    <?php
+    if (!empty($_COOKIE)){
+        foreach ($_COOKIE as $key => $value) {
+            unserialize($value);
+            ?>
+            <tr>
+                <td><?php echo $key + 1; ?></td>
+                <td><a href="index.php?open=<?php echo $key;?>"><?php echo $value['caption']; ?></a></td>
+                <td><?php echo $value['price']; ?></td>
+                <td><?php echo $value['name']; ?></td>
+                <td><a href="index.php?delete=<?php echo $key;?>">Удалить</a></td>
+            </tr>
+            <?php
+        }
+    }
+    ?>
+</table>
