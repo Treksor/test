@@ -1,8 +1,7 @@
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display errors', 1);
-//session_start();
-//$_POST['check']='';
+
 
 //$allData = array(Array('clientType' => '',
 //    'name' => '',
@@ -33,7 +32,7 @@ $item1=$item;
 $cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
 $categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна','Телега говна с горкой');
 
-function checkthecheck($a){
+function checkTheCheck($a){
     if (!array_key_exists('check',$a)){
         $a['check']='';
     }
@@ -59,13 +58,13 @@ if (isset($_GET['open'])) {
 
 
 if (isset($_POST['submit'])){
+    $itemtosave=checkTheCheck($_POST);
     if (is_numeric($item['id'])){
-        $allData[$item['id']]=$_POST;
+        $allData[$item['id']]=$itemtosave;
         $item=$item1;
     }
     else {
-//        checkthecheck($_POST);
-        $allData[]=checkthecheck($_POST);
+        $allData[]=$itemtosave;
     }
     $var=serialize($allData);
     file_put_contents('./temp/data.txt',$var);
