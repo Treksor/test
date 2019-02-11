@@ -38,20 +38,33 @@ function checkTheCheck($a){
     }
     return $a;
 }
+function getAds($file='./temp/data.txt'){
+    $data=fopen($file,'r');
+    if (filesize($file)>0){
+        $var=fread($data,filesize($file));
+        $var=unserialize($var);
+    }
+    fclose($data);
+    return $var;
+}
 
-//if (isset($_COOKIE['data'])){
-$var=file_get_contents('./temp/data.txt');
-$allData=unserialize($var);
-//}
+function saveAds($var,$file='./temp/data.txt'){
+    $data=fopen($file,'w');
+    fwrite($data, $var);
+    fclose($data);
+}
+$allData=getAds();
 
 if (isset($_GET['delete'])) {
+//    $allData=getAds();
     unset($allData[$_GET['delete']]);
-    $var=serialize($allData);
-    file_put_contents('./temp/data.txt',$var);
+    $var = serialize($allData);
+    saveAds($var);
     header('location: ./index.php');
 }
 
 if (isset($_GET['open'])) {
+//    $allData=getAds();
     $item = $allData[$_GET['open']];
     $item['id'] = $_GET['open'];
 }
@@ -67,8 +80,7 @@ if (isset($_POST['submit'])){
         $allData[]=$itemtosave;
     }
     $var=serialize($allData);
-    file_put_contents('./temp/data.txt',$var);
-
+    saveAds($var);
     header('location: ./index.php');
 }
 
