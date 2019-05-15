@@ -2,22 +2,22 @@
 
 <link rel="stylesheet" type="text/css" href=styles.css>
 <form method="POST">
-    <input type="hidden" name="id" value={$item.id}>
+    <input type="hidden" name="id" value="{$item.id}">
     {html_radios name="clientType" options=$clientType selected=$item.clientType}
     <br>
-    <p><label class="left-label" for="name">Ваше имя</label> <input name="name" type="text" id="name" value={$item.name}>
+    <p><label class="left-label" for="name">Ваше имя</label> <input name="name" type="text" id="name" value="{$item.name}">
         <br>
         <label class="left-label" for="mail">Электронная почта </label><input name="mail" type="email" id="mail" value="{$item.mail}">
     <p><input type="checkbox" name="check" id="samayaglavnayagalka" {if $item.check==='on'}checked{/if}> <label for="samayaglavnayagalka">Я не хочу получать вопросы по объявлению по e-mail</label>
-    <p><label class="left-label" for="tnumber">Номер телефона: </label><input name="phoneNumber" type="text" id="tnumber" value={$item.phoneNumber}>
+    <p><label class="left-label" for="tnumber">Номер телефона: </label><input name="phoneNumber" type="text" id="tnumber" value="{$item.phoneNumber}">
     <p><label class="left-label" for="town">Город</label>
     <p>{html_options name=town options=$town selected=$item.town}
     <p><label class="left-label" for="lulz">Категория</label>
     <p>{html_options name=category options=$category selected=$item.category}
 
-    <p><label class="left-label" for="nazvanieobyavy">Название объявления </label><input name="caption" type="text" id="nazvanieobyavy" value={$item.caption}>
+    <p><label class="left-label" for="nazvanieobyavy">Название объявления </label><input name="caption" type="text" id="nazvanieobyavy" value="{$item.caption}">
     <p><label class="left-label" for="notes">Описание товара</label><textarea name="notes" id="notes" style="resize:none;">{$item.notes}</textarea>
-    <p><label class="left-label" for="price">Цена </label><input name="price" type="text" size="5" id="price" value={$item.price}>руб.
+    <p><label class="left-label" for="price">Цена </label><input name="price" type="text" size="5" id="price" value="{$item.price}">руб.
     <p><input type="submit" name="submit" value="submit">
 </form>
 
