@@ -17,7 +17,7 @@ $smarty->config_dir = $smarty_dir.'configs';
 
 
 $item = array(
-    'clientType' => 'private',
+    'clientType' => 'person',
     'name' => '',
     'mail' => '',
     'check' =>'on',
@@ -91,9 +91,7 @@ $smarty->assign('clientType',array('person'=>'Частное лицо',
                                           'company'=>'Компания'));
 $smarty->assign('clientTypeS','person');
 $smarty->assign('town',$cities);
-$smarty->assign('townS',0);
 $smarty->assign('category',$categories);
-$smarty->assign('categoryS',0);
 $smarty->assign('item',$item);
 $smarty->assign('data',$allData);
 
