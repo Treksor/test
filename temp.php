@@ -2,55 +2,28 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display errors', 1);
 
-$project_root=$_SERVER['DOCUMENT_ROOT'];
-$smarty_dir=$project_root.'/smarty/';
+$db = mysql_connect('localhost','treksor','123') or die('mysql dead');
+mysql_select_db('treksor_test',$db) or die ('cant get db');
+echo "connected <br>";
 
-// put full path to Smarty.class.php
-require($smarty_dir.'libs/Smarty.class.php');
-$smarty = new Smarty();
+$result=mysql_query('select users.id,first_name,last_name,phone,department,departments.id as department_id,name 
+from users left join departments on (users.department=departments.id) limit 2') or die('запрос не удался'.mysql_error());
 
-$smarty->compile_check = true;
-$smarty->debugging = true;
-
-$smarty->template_dir = $smarty_dir.'templates';
-$smarty->compile_dir = $smarty_dir.'templates_c';
-$smarty->cache_dir = $smarty_dir.'cache';
-$smarty->config_dir = $smarty_dir.'configs';
-
-$massive=array('first'=>'mary','john','ted');
-
-if (isset($_GET['mobile'])){
-    $smarty->assign('header_template','header_mobile');
-}
-else{
-    $smarty->assign('header_template','header');
-}
-
-$items_list = array(23 => array('no' => 2456, 'label' => 'Salad'),
-    96 => array('no' => 4889, 'label' => 'Cream')
-);
-$smarty->assign('items', $items_list);
-
-$smarty->assign('title','сайт');
-$smarty->assign('names',$massive);
-$smarty->assign('name', 'Igor');
-$smarty->assign('Contacts',
-    array('fax' => '555-222-9876',
-        'email' => 'zaphod@slartibartfast.example.com',
-        'phone' => array('home' => '555-444-3333',
-            'cell' => '555-111-1234')
-    )
-);
-$smarty->assign('cust_options', array(
-        1000 => 'Joe Schmoe',
-        1001 => 'Jack Smith',
-        1002 => 'Jane Johnson',
-        1003 => 'Charlie Brown')
-);
-$smarty->assign('customer_id', 1001);
-
-$smarty->assign('data',array(1,2,3,4,5,6,7,8,9));
-$smarty->assign('tr',array('bgcolor="#eeeeee"','bgcolor="#dddddd"'));
+echo "всего юзеров ".mysql_num_rows($result);
 
 
-$smarty->display('index.tpl');
+while ($row=mysql_fetch_assoc($result)){
+    $row['last_name'].=" A.";
+    mysql_query("update users set last_name='$row[last_name]' where id=$row[id]");
+print_r($row);}
+
+$insert_sql="INSERT INTO `users` (`first_name`, `last_name`, `phone`, `department`)
+VALUES ('Е.', 'Баный', '79687765427', '3')";
+$insert_sq2="INSERT INTO `users` (`first_name`, `last_name`, `phone`, `department`)
+VALUES ('Виталий', 'Иванов', '79687787924', '3')";
+mysql_query($insert_sql);
+mysql_query($insert_sq2);
+
+
+mysql_free_result($result);
+mysql_close();
