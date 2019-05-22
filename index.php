@@ -47,7 +47,7 @@ if (!TableExists('cities')){
   `city_name` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL
   ) ENGINE=\'MyISAM\' COLLATE \'utf8_general_ci\'') or die('города не создались'.mysql_error());
    foreach ($cities as $value){
-       mysql_query("INSERT INTO `cities` (`city_name`)
+       mysql_query("INSERT INTO `cities` (`city`)
 VALUES ('$value');");
    }
 }
@@ -80,15 +80,17 @@ if (!TableExists('adds')) {
 }
 
 function list_options($col,$table){
-    $result=mysql_query("select $col from $table");
+    $result=mysql_query("select * from $table");
     while ($row=mysql_fetch_assoc($result)){
-        $row1[]=$row[$col];
+        $output[$row['id']]=$row[$col];
     }
     close_result($result);
-    return $row1;
+    return $output;
 }
-$cities=list_options('city_name','cities');
+
+$cities=list_options('city','cities');
 $categories=list_options('category','categories');
+
 
 function saveAds($var){
     mysql_query("INSERT INTO `adds` (`status`, `user_name`, `user_email`, `check`, `phone_number`, `city`, `category`, `add_name`, `add_description`, `price`)
@@ -96,6 +98,39 @@ VALUES ('$var[status]', '$var[user_name]', '$var[user_email]', '$var[check]', '$
 '$var[city]', '$var[category]', '$var[add_name]', '$var[add_description]', '$var[price]');");
 }
 
+function updateAds($var){
+    mysql_query("UPDATE  `lesson8`.`adds` SET  
+`status` = '$var[status]',
+`user_name` =  '$var[user_name]',
+`user_email` = '$var[user_email]',
+`phone_number` =  '$var[phone_number]',
+`city` =  '$var[city]',
+`category` =  '$var[category]',
+`add_name` =  '$var[add_name]',
+`add_description` =  '$var[add_description]',
+`price` =  '$var[price]'
+ WHERE  `adds`.`id` ='$var[id]';")or die('изменения не внесены' . mysql_error());
+}
+
+function getAds(){
+    $result = mysql_query("SELECT * FROM adds");
+    while ($row=mysql_fetch_assoc($result)){
+        $output[$row['id']]=$row;
+    }
+    close_result($result);
+    return $output;
+}
+
+function deleteAds($ad){
+    mysql_query("DELETE FROM `lesson8`.`adds` WHERE `adds`.`id`=$ad[id]");
+}
+
+function checkTheCheck($a){
+    if (!array_key_exists('check',$a)){
+        $a['check']='off';
+    }
+    return $a;
+}
 
 $item = array(
     'status' => 'person',
@@ -111,61 +146,34 @@ $item = array(
     'submit' => '',
     'id'=>''
 );
-$item1=$item;
-
-function checkTheCheck($a){
-    if (!array_key_exists('check',$a)){
-        $a['check']='';
-    }
-    return $a;
-}
-
-function getAds($file='./temp/data.txt'){
-    $data=fopen($file,'r');
-    if (filesize($file)>0){
-        $var=fread($data,filesize($file));
-        $var=unserialize($var);
-    }
-    fclose($data);
-    return $var;
-}
-
 
 $allData=getAds();
 
+if (isset($_GET['open'])) {
+    $item = $allData[$_GET['open']];
+}
+
 if (isset($_GET['delete'])) {
-//    $allData=getAds();
-    unset($allData[$_GET['delete']]);
-    $var = serialize($allData);
-    saveAds($var);
+    $item=$allData[$_GET['delete']];
+    deleteAds($item);
     header('location: ./index.php');
 }
-
-if (isset($_GET['open'])) {
-//    $allData=getAds();
-    $item = $allData[$_GET['open']];
-    $item['id'] = $_GET['open'];
-}
-
 
 if (isset($_POST['submit'])){
     $itemtosave=checkTheCheck($_POST);
     if (is_numeric($item['id'])){
-        $allData[$item['id']]=$itemtosave;
-        $item=$item1;
+        updateAds($itemtosave);
     }
     else {
-        $allData[]=$itemtosave;
+        saveAds($itemtosave);
     }
-    saveAds($allData);
     header('location: ./index.php');
 }
 
 
 $smarty->assign('status',array('person'=>'Частное лицо',
                                           'company'=>'Компания'));
-//$smarty->assign('statusS','person');
-$smarty->assign('town',$cities);
+$smarty->assign('city',$cities);
 $smarty->assign('category',$categories);
 $smarty->assign('item',$item);
 $smarty->assign('data',$allData);

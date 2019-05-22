@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2019-05-20 11:11:16
+<?php /* Smarty version 2.6.31, created on 2019-05-21 12:19:00
          compiled from index.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'html_radios', 'index.tpl', 6, false),array('function', 'html_options', 'index.tpl', 14, false),)), $this); ?>
@@ -15,31 +15,29 @@ unset($_smarty_tpl_vars);
     <?php echo smarty_function_html_radios(array('name' => 'status','options' => $this->_tpl_vars['status'],'selected' => $this->_tpl_vars['item']['status']), $this);?>
 
     <br>
-    <p><label class="left-label" for="user_name">Ваше имя</label> <input name="user_name" type="text" id="user_name" value="<?php echo $this->_tpl_vars['item']['name']; ?>
+    <p><label class="left-label" for="user_name">Ваше имя</label> <input name="user_name" type="text" id="user_name" value="<?php echo $this->_tpl_vars['item']['user_name']; ?>
 ">
         <br>
-        <label class="left-label" for="user_email">Электронная почта </label><input name="user_email" type="email" id="user_email" value="<?php echo $this->_tpl_vars['item']['mail']; ?>
+        <label class="left-label" for="user_email">Электронная почта </label><input name="user_email" type="email" id="user_email" value="<?php echo $this->_tpl_vars['item']['user_email']; ?>
 ">
     <p><input type="checkbox" name="check" id="check" <?php if ($this->_tpl_vars['item']['check'] === 'on'): ?>checked<?php endif; ?>> <label for="check">Я не хочу получать вопросы по объявлению по e-mail</label>
-    <p><label class="left-label" for="phone_number">Номер телефона: </label><input name="phone_number" type="text" id="phone_number" value="<?php echo $this->_tpl_vars['item']['phoneNumber']; ?>
+    <p><label class="left-label" for="phone_number">Номер телефона: </label><input name="phone_number" type="text" id="phone_number" value="<?php echo $this->_tpl_vars['item']['phone_number']; ?>
 ">
     <p><label class="left-label" for="city">Город</label>
-    <p><?php echo smarty_function_html_options(array('name' => 'town','options' => $this->_tpl_vars['town'],'selected' => $this->_tpl_vars['item']['town']), $this);?>
+    <p><?php echo smarty_function_html_options(array('name' => 'city','options' => $this->_tpl_vars['city'],'selected' => $this->_tpl_vars['item']['city']), $this);?>
 
     <p><label class="left-label" for="category">Категория</label>
     <p><?php echo smarty_function_html_options(array('name' => 'category','options' => $this->_tpl_vars['category'],'selected' => $this->_tpl_vars['item']['category']), $this);?>
 
 
-    <p><label class="left-label" for="add_name">Название объявления </label><input name="add_name" type="text" id="add_name" value="<?php echo $this->_tpl_vars['item']['caption']; ?>
+    <p><label class="left-label" for="add_name">Название объявления </label><input name="add_name" type="text" id="add_name" value="<?php echo $this->_tpl_vars['item']['add_name']; ?>
 ">
-    <p><label class="left-label" for="add_description">Описание товара</label><textarea name="add_description" id="add_description" style="resize:none;"><?php echo $this->_tpl_vars['item']['notes']; ?>
+    <p><label class="left-label" for="add_description">Описание товара</label><textarea name="add_description" id="add_description" style="resize:none;"><?php echo $this->_tpl_vars['item']['add_description']; ?>
 </textarea>
     <p><label class="left-label" for="price">Цена </label><input name="price" type="text" size="5" id="price" value="<?php echo $this->_tpl_vars['item']['price']; ?>
 ">руб.
     <p><input type="submit" name="submit" value="submit">
 </form>
-
-
 
 <table cellpadding="10px">
     <tr>
@@ -53,14 +51,14 @@ unset($_smarty_tpl_vars);
     foreach ($_from as $this->_tpl_vars['id'] => $this->_tpl_vars['i']):
 ?>
             <tr>
-                <td><?php echo $this->_tpl_vars['id']+1; ?>
+                <td><?php echo $this->_tpl_vars['id']; ?>
 </td>
                 <td><a href="../index.php?open=<?php echo $this->_tpl_vars['id']; ?>
-"><?php echo $this->_tpl_vars['i']['caption']; ?>
+"><?php echo $this->_tpl_vars['i']['add_name']; ?>
 </a></td>
                 <td><?php echo $this->_tpl_vars['i']['price']; ?>
 </td>
-                <td><?php echo $this->_tpl_vars['i']['name']; ?>
+                <td><?php echo $this->_tpl_vars['i']['user_name']; ?>
 </td>
                 <td><a href="../index.php?delete=<?php echo $this->_tpl_vars['id']; ?>
 ">Удалить</a></td>
@@ -69,9 +67,6 @@ unset($_smarty_tpl_vars);
     <?php endif; ?>
 </table>
 
-
-
-                
 
 
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
