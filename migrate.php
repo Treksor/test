@@ -2,9 +2,31 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display errors', 1);
 
-function create($host,$user,$pass,$dbname){
-    $db=mysql_connect($host,$user,$pass) or die('нет соединения с сервером'.mysql_error());
-    mysql_query("CREATE DATABASE `$dbname` COLLATE 'utf8_general_ci'") or die ('не могу создать'.mysql_error());
+function create(){
+    mysql_query('CREATE TABLE `cities` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `city` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL
+  ) ENGINE=\'MyISAM\' COLLATE \'utf8_general_ci\'') or die('города не создались'.mysql_error());
+
+    mysql_query('CREATE TABLE `categories` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `category` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL
+) ENGINE=\'MyISAM\' COLLATE \'utf8_general_ci\'') or die('категории не создались' . mysql_error());
+
+    mysql_query('CREATE TABLE `adds` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `status` varchar(7) COLLATE \'utf8_general_ci\' NOT NULL,
+  `user_name` varchar(40) COLLATE \'utf8_general_ci\' NOT NULL,
+  `user_email` varchar(40) COLLATE \'utf8_general_ci\' NOT NULL,
+  `check` tinyint NOT NULL,
+  `phone_number` char(11) COLLATE \'utf8_general_ci\' NOT NULL,
+  `city` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL,
+  `category` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL,
+  `add_name` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL,
+  `add_description` text COLLATE \'utf8_general_ci\' NOT NULL,
+  `price` int NOT NULL
+) ENGINE=\'MyISAM\' COLLATE \'utf8_general_ci\';') or die('шаблон объявы не создался' . mysql_error());
+
 }
 
 function savedata($var,$file='./temp/data.txt'){
@@ -14,11 +36,23 @@ function savedata($var,$file='./temp/data.txt'){
 }
 
 if (isset($_POST['submit'])){
-    create($_POST['host'],$_POST['user'],$_POST['pass'],$_POST['dbname']);
+    $db=mysql_connect($_POST['host'],$_POST['user'],$_POST['pass']) or die('нет соединения с сервером'.mysql_error());
+    $a=mysql_select_db($_POST['dbname'],$db);
+    if (!$a){
+        mysql_query("CREATE DATABASE `$_POST[dbname]` COLLATE 'utf8_general_ci'") or die ('не могу создать'.mysql_error());
+        mysql_select_db($_POST['dbname'],$db);
+        create();
+    }else{
+        mysql_query("DROP DATABASE $_POST[dbname]");
+        mysql_query("CREATE DATABASE `$_POST[dbname]` COLLATE 'utf8_general_ci'") or die ('не могу создать заного'.mysql_error());
+        mysql_select_db($_POST['dbname'],$db);
+        create();
+    }
     $data=serialize($_POST);
     savedata($data);
     header('location: ./index.php');
 }
+
 ?>
 
 <form method="POST">
