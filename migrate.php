@@ -18,7 +18,7 @@ function create(){
   `status` varchar(7) COLLATE \'utf8_general_ci\' NOT NULL,
   `user_name` varchar(40) COLLATE \'utf8_general_ci\' NOT NULL,
   `user_email` varchar(40) COLLATE \'utf8_general_ci\' NOT NULL,
-  `check` tinyint NOT NULL,
+  `checkbox` char(5) NOT NULL,
   `phone_number` char(11) COLLATE \'utf8_general_ci\' NOT NULL,
   `city` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL,
   `category` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL,
@@ -51,6 +51,19 @@ if (isset($_POST['submit'])){
     $data=serialize($_POST);
     savedata($data);
     header('location: ./index.php');
+}
+
+$cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
+$categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна','Телега говна с горкой');
+
+foreach ($cities as $value){
+    mysql_query("INSERT INTO `cities` (`city`)
+VALUES ('$value');");
+}
+
+foreach ($categories as $value){
+    mysql_query("INSERT INTO `categories` (`category`)
+VALUES ('$value');");
 }
 
 ?>

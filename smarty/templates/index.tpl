@@ -8,7 +8,7 @@
     <p><label class="left-label" for="user_name">Ваше имя</label> <input name="user_name" type="text" id="user_name" value="{$item.user_name}">
         <br>
         <label class="left-label" for="user_email">Электронная почта </label><input name="user_email" type="email" id="user_email" value="{$item.user_email}">
-    <p><input type="checkbox" name="check" id="check" {if $item.check==='on'}checked{/if}> <label for="check">Я не хочу получать вопросы по объявлению по e-mail</label>
+    <p><input type="checkbox" name="checkbox" id="checkbox" {if $item.checkbox==='on'}checked{/if}> <label for="checkbox">Я не хочу получать вопросы по объявлению по e-mail</label>
     <p><label class="left-label" for="phone_number">Номер телефона: </label><input name="phone_number" type="text" id="phone_number" value="{$item.phone_number}">
     <p><label class="left-label" for="city">Город</label>
     <p>{html_options name=city options=$city selected=$item.city}

@@ -6,9 +6,7 @@ function connect_db(){
     $logininfo=unserialize($logininfo);
     fclose($data);
     $db = mysql_connect($logininfo['host'],$logininfo['user'],$logininfo['pass']) or die('нет соединения с сервером'.mysql_error());
-    $a=mysql_select_db($logininfo['dbname'],$db) or die ('Нет такой бд.<a href="migrate.php"> Создать?');
-    return $a;
-
+    mysql_select_db($logininfo['dbname'],$db) or die ('Нет такой бд.<a href="migrate.php"> Создать?');
 }
 
 function TableExists($table) {
@@ -27,23 +25,21 @@ function list_options($col,$table){
 }
 
 function saveAds($var){
-    mysql_query("INSERT INTO `adds` (`status`, `user_name`, `user_email`, `check`, `phone_number`, `city`, `category`, `add_name`, `add_description`, `price`)
-VALUES ('$var[status]', '$var[user_name]', '$var[user_email]', '$var[check]', '$var[phone_number]',
-'$var[city]', '$var[category]', '$var[add_name]', '$var[add_description]', '$var[price]');");
+    $keys="`".implode('`,`',array_keys($var))."`";
+    $vals="'".implode("','",array_values($var))."'";
+    mysql_query("INSERT INTO `adds` ($keys) VALUES ($vals)") or die(''.mysql_error());
 }
 
-function updateAds($var){
-    mysql_query("UPDATE  `lesson8`.`adds` SET  
-`status` = '$var[status]',
-`user_name` =  '$var[user_name]',
-`user_email` = '$var[user_email]',
-`phone_number` =  '$var[phone_number]',
-`city` =  '$var[city]',
-`category` =  '$var[category]',
-`add_name` =  '$var[add_name]',
-`add_description` =  '$var[add_description]',
-`price` =  '$var[price]'
- WHERE  `adds`.`id` ='$var[id]';")or die('изменения не внесены' . mysql_error());
+function updateAds($var,$tablename){
+    $a=$var['id'];
+    unset($var['id']);
+    $keys=array_keys($var);
+    $vals=array_values($var);
+    for($i = 0, $length=count($keys); $i < $length; ++$i) {
+        $pair[]="`$keys[$i]`='$vals[$i]'";
+    }
+    $pair=implode(',',$pair);
+    mysql_query("UPDATE  `$tablename` SET $pair WHERE  `$tablename`.`id` ='$a';") or die('изменения не внесены' . mysql_error());
 }
 
 function getAds(){
@@ -57,13 +53,41 @@ function getAds(){
 }
 
 function deleteAds($ad){
-    mysql_query("DELETE FROM `lesson8`.`adds` WHERE `adds`.`id`=$ad[id]");
+    mysql_query("DELETE FROM `adds` WHERE `adds`.`id`=$ad[id]");
 }
 
-function checkTheCheck($a){
-    if (!array_key_exists('check',$a)){
-        $a['check']='off';
+function checkTheCheckS($a){
+    unset($a['submit']);
+    unset($a['id']);
+    if (!array_key_exists('checkbox',$a)){
+        $a['checkbox']='off';
     }
     return $a;
 }
 
+function checkTheCheckU($a){
+    unset($a['submit']);
+    if (!array_key_exists('checkbox',$a)){
+        $a['checkbox']='off';
+    }
+    return $a;
+}
+
+//function updateAds($var){
+//    mysql_query("UPDATE  `adds` SET
+//`status` = '$var[status]',
+//`user_name` =  '$var[user_name]',
+//`user_email` = '$var[user_email]',
+//`phone_number` =  '$var[phone_number]',
+//`city` =  '$var[city]',
+//`category` =  '$var[category]',
+//`add_name` =  '$var[add_name]',
+//`add_description` =  '$var[add_description]',
+//`price` =  '$var[price]'
+// WHERE  `adds`.`id` ='$var[id]';")or die('изменения не внесены' . mysql_error());
+//}
+//function saveAds($var){
+//    mysql_query("INSERT INTO `adds` (`status`, `user_name`, `user_email`, `checkbox`, `phone_number`, `city`, `category`, `add_name`, `add_description`, `price`)
+//VALUES ('$var[status]', '$var[user_name]', '$var[user_email]', '$var[checkbox]', '$var[phone_number]',
+//'$var[city]', '$var[category]', '$var[add_name]', '$var[add_description]', '$var[price]');");
+//}

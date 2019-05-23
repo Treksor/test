@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2019-05-21 12:19:00
+<?php /* Smarty version 2.6.31, created on 2019-05-23 10:31:18
          compiled from index.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'html_radios', 'index.tpl', 6, false),array('function', 'html_options', 'index.tpl', 14, false),)), $this); ?>
@@ -20,7 +20,7 @@ unset($_smarty_tpl_vars);
         <br>
         <label class="left-label" for="user_email">Электронная почта </label><input name="user_email" type="email" id="user_email" value="<?php echo $this->_tpl_vars['item']['user_email']; ?>
 ">
-    <p><input type="checkbox" name="check" id="check" <?php if ($this->_tpl_vars['item']['check'] === 'on'): ?>checked<?php endif; ?>> <label for="check">Я не хочу получать вопросы по объявлению по e-mail</label>
+    <p><input type="checkbox" name="checkbox" id="checkbox" <?php if ($this->_tpl_vars['item']['checkbox'] === 'on'): ?>checked<?php endif; ?>> <label for="checkbox">Я не хочу получать вопросы по объявлению по e-mail</label>
     <p><label class="left-label" for="phone_number">Номер телефона: </label><input name="phone_number" type="text" id="phone_number" value="<?php echo $this->_tpl_vars['item']['phone_number']; ?>
 ">
     <p><label class="left-label" for="city">Город</label>

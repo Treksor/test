@@ -18,19 +18,6 @@ $smarty->compile_dir = $smarty_dir.'templates_c';
 $smarty->cache_dir = $smarty_dir.'cache';
 $smarty->config_dir = $smarty_dir.'configs';
 
-$cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
-$categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна','Телега говна с горкой');
-
-foreach ($cities as $value){
-    mysql_query("INSERT INTO `cities` (`city`)
-VALUES ('$value');");
-}
-
-foreach ($categories as $value){
-    mysql_query("INSERT INTO `categories` (`category`)
-VALUES ('$value');");
-}
-
 $cities=list_options('city','cities');
 $categories=list_options('category','categories');
 
@@ -38,7 +25,7 @@ $item = array(
     'status' => 'person',
     'user_name' => '',
     'user_email' => '',
-    'check' =>'on',
+    'checkbox' =>'on',
     'phone_number' => '',
     'city' => '',
     'category' => '',
@@ -62,11 +49,13 @@ if (isset($_GET['delete'])) {
 }
 
 if (isset($_POST['submit'])){
-    $itemtosave=checkTheCheck($_POST);
+//    $itemtosave=checkTheCheck($_POST);
     if (is_numeric($item['id'])){
-        updateAds($itemtosave);
+        $itemtosave=checkTheCheckU($_POST);
+        updateAds($itemtosave,'adds');
     }
     else {
+        $itemtosave=checkTheCheckS($_POST);
         saveAds($itemtosave);
     }
     header('location: ./index.php');
