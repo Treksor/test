@@ -25,7 +25,7 @@ $item = array(
     'status' => 'person',
     'user_name' => '',
     'user_email' => '',
-    'checkbox' =>'on',
+    'checkbox' =>'1',
     'phone_number' => '',
     'city' => '',
     'category' => '',
@@ -52,10 +52,12 @@ if (isset($_POST['submit'])){
 //    $itemtosave=checkTheCheck($_POST);
     if (is_numeric($item['id'])){
         $itemtosave=checkTheCheckU($_POST);
+//        $itemtosave=array_map('mysql_real_escape_string',$itemtosave);
         updateAds($itemtosave,'adds');
     }
     else {
         $itemtosave=checkTheCheckS($_POST);
+//        $itemtosave=array_map('mysql_real_escape_string',$itemtosave);
         saveAds($itemtosave);
     }
     header('location: ./index.php');

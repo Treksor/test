@@ -15,10 +15,10 @@ function create(){
 
     mysql_query('CREATE TABLE `adds` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `status` varchar(7) COLLATE \'utf8_general_ci\' NOT NULL,
+  `status` enum(\'person\', \'status\') COLLATE \'utf8_general_ci\' NOT NULL,
   `user_name` varchar(40) COLLATE \'utf8_general_ci\' NOT NULL,
   `user_email` varchar(40) COLLATE \'utf8_general_ci\' NOT NULL,
-  `checkbox` char(5) NOT NULL,
+  `checkbox` tinyint(1) NOT NULL,
   `phone_number` char(11) COLLATE \'utf8_general_ci\' NOT NULL,
   `city` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL,
   `category` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL,

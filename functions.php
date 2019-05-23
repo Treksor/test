@@ -25,16 +25,18 @@ function list_options($col,$table){
 }
 
 function saveAds($var){
-    $keys="`".implode('`,`',array_keys($var))."`";
-    $vals="'".implode("','",array_values($var))."'";
+    $keys="`".implode('`,`',array_map('mysql_real_escape_string',array_keys($var)))."`";
+//    $keys="`".implode('`,`',array_keys($var))."`";
+//    $vals="'".implode("','",array_values($var))."'";
+    $vals="'".implode("','",array_map('mysql_real_escape_string',array_values($var)))."'";
     mysql_query("INSERT INTO `adds` ($keys) VALUES ($vals)") or die(''.mysql_error());
 }
 
 function updateAds($var,$tablename){
     $a=$var['id'];
     unset($var['id']);
-    $keys=array_keys($var);
-    $vals=array_values($var);
+    $keys=array_map('mysql_real_escape_string',array_keys($var));
+    $vals=array_map('mysql_real_escape_string',array_values($var));
     for($i = 0, $length=count($keys); $i < $length; ++$i) {
         $pair[]="`$keys[$i]`='$vals[$i]'";
     }
@@ -60,7 +62,9 @@ function checkTheCheckS($a){
     unset($a['submit']);
     unset($a['id']);
     if (!array_key_exists('checkbox',$a)){
-        $a['checkbox']='off';
+        $a['checkbox']='0';
+    }else{
+        $a['checkbox']='1';
     }
     return $a;
 }
@@ -68,11 +72,23 @@ function checkTheCheckS($a){
 function checkTheCheckU($a){
     unset($a['submit']);
     if (!array_key_exists('checkbox',$a)){
-        $a['checkbox']='off';
+        $a['checkbox']='0';
+    }else{
+        $a['checkbox']='1';
     }
     return $a;
 }
 
+
+//function mysqlcheck($var){
+//    $var1=array();
+//    foreach ($var as $key=>$value){
+//        $key=mysql_real_escape_string($key);
+//        $value=mysql_real_escape_string($value);
+//        $var1[$key]=$value;
+//    }
+//    return $var1;
+//}
 //function updateAds($var){
 //    mysql_query("UPDATE  `adds` SET
 //`status` = '$var[status]',
