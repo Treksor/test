@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2019-05-23 14:04:26
+<?php /* Smarty version 2.6.31, created on 2019-05-24 10:36:07
          compiled from index.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'html_radios', 'index.tpl', 6, false),array('function', 'html_options', 'index.tpl', 14, false),array('modifier', 'escape', 'index.tpl', 8, false),)), $this); ?>
@@ -15,7 +15,7 @@ unset($_smarty_tpl_vars);
     <?php echo smarty_function_html_radios(array('name' => 'status','options' => $this->_tpl_vars['status'],'selected' => $this->_tpl_vars['item']['status']), $this);?>
 
     <br>
-    <p><label class="left-label" for="user_name">Ваше имя</label> <input name="user_name" type="text" id="user_name" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['item']['user_name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'htmlall') : smarty_modifier_escape($_tmp, 'htmlall')); ?>
+    <p><label class="left-label" for="user_name">Ваше имя</label> <input name="user_name" type="text" id="user_name" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['item']['user_name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'UTF-8', 'htmlall') : smarty_modifier_escape($_tmp, 'UTF-8', 'htmlall')); ?>
 ">
         <br>
         <label class="left-label" for="user_email">Электронная почта </label><input name="user_email" type="email" id="user_email" value="<?php echo $this->_tpl_vars['item']['user_email']; ?>
@@ -30,9 +30,9 @@ unset($_smarty_tpl_vars);
     <p><?php echo smarty_function_html_options(array('name' => 'category','options' => $this->_tpl_vars['category'],'selected' => $this->_tpl_vars['item']['category']), $this);?>
 
 
-    <p><label class="left-label" for="add_name">Название объявления </label><input name="add_name" type="text" id="add_name" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['item']['add_name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'htmlall') : smarty_modifier_escape($_tmp, 'htmlall')); ?>
+    <p><label class="left-label" for="add_name">Название объявления </label><input name="add_name" type="text" id="add_name" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['item']['add_name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'UTF-8', 'htmlall') : smarty_modifier_escape($_tmp, 'UTF-8', 'htmlall')); ?>
 ">
-    <p><label class="left-label" for="add_description">Описание товара</label><textarea name="add_description" id="add_description" style="resize:none;"><?php echo ((is_array($_tmp=$this->_tpl_vars['item']['add_description'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'htmlall') : smarty_modifier_escape($_tmp, 'htmlall')); ?>
+    <p><label class="left-label" for="add_description">Описание товара</label><textarea name="add_description" id="add_description" style="resize:none;"><?php echo ((is_array($_tmp=$this->_tpl_vars['item']['add_description'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'UTF-8', 'htmlall') : smarty_modifier_escape($_tmp, 'UTF-8', 'htmlall')); ?>
 </textarea>
     <p><label class="left-label" for="price">Цена </label><input name="price" type="text" size="5" id="price" value="<?php echo $this->_tpl_vars['item']['price']; ?>
 ">руб.
@@ -54,11 +54,11 @@ unset($_smarty_tpl_vars);
                 <td><?php echo $this->_tpl_vars['id']; ?>
 </td>
                 <td><a href="../index.php?open=<?php echo $this->_tpl_vars['id']; ?>
-"><?php echo $this->_tpl_vars['i']['add_name']; ?>
+"><?php echo ((is_array($_tmp=$this->_tpl_vars['i']['add_name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'UTF-8', 'htmlall') : smarty_modifier_escape($_tmp, 'UTF-8', 'htmlall')); ?>
 </a></td>
                 <td><?php echo $this->_tpl_vars['i']['price']; ?>
 </td>
-                <td><?php echo $this->_tpl_vars['i']['user_name']; ?>
+                <td><?php echo ((is_array($_tmp=$this->_tpl_vars['i']['user_name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'UTF-8', 'htmlall') : smarty_modifier_escape($_tmp, 'UTF-8', 'htmlall')); ?>
 </td>
                 <td><a href="../index.php?delete=<?php echo $this->_tpl_vars['id']; ?>
 ">Удалить</a></td>

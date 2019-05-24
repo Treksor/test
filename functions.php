@@ -7,6 +7,7 @@ function connect_db(){
     fclose($data);
     $db = mysql_connect($logininfo['host'],$logininfo['user'],$logininfo['pass']) or die('нет соединения с сервером'.mysql_error());
     mysql_select_db($logininfo['dbname'],$db) or die ('Нет такой бд.<a href="migrate.php"> Создать?');
+    mysql_query("SET NAMES utf8");
 }
 
 function TableExists($table) {

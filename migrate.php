@@ -15,7 +15,7 @@ function create(){
 
     mysql_query('CREATE TABLE `adds` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `status` enum(\'person\', \'status\') COLLATE \'utf8_general_ci\' NOT NULL,
+  `status` enum(\'person\', \'company\') COLLATE \'utf8_general_ci\' NOT NULL,
   `user_name` varchar(40) COLLATE \'utf8_general_ci\' NOT NULL,
   `user_email` varchar(40) COLLATE \'utf8_general_ci\' NOT NULL,
   `checkbox` tinyint(1) NOT NULL,
@@ -24,7 +24,7 @@ function create(){
   `category` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL,
   `add_name` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL,
   `add_description` text COLLATE \'utf8_general_ci\' NOT NULL,
-  `price` int NOT NULL
+  `price` DECIMAL(10,2) NOT NULL
 ) ENGINE=\'MyISAM\' COLLATE \'utf8_general_ci\';') or die('шаблон объявы не создался' . mysql_error());
 
 }
