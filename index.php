@@ -4,7 +4,7 @@ ini_set('display errors', 1);
 
 include('functions.php');
 $link=connect_db();
-
+phpinfo();
 $project_root=$_SERVER['DOCUMENT_ROOT'];
 $smarty_dir=$project_root.'/smarty/';
 require($smarty_dir.'libs/Smarty.class.php');

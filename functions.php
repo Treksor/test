@@ -7,7 +7,6 @@ function connect_db(){
     fclose($data);
     $link = mysqli_connect($logininfo['host'],$logininfo['user'],$logininfo['pass']) or die('нет соединения с сервером'.mysqli_error($link));
     mysqli_select_db($link,$logininfo['dbname']) or die ('Нет такой бд.<a href="migrate.php"> Создать?');
-    $link = mysqli_connect($logininfo['host'],$logininfo['user'],$logininfo['pass'],$logininfo['dbname']);
     return $link;
 }
 
