@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2019-05-31 10:40:34
+<?php /* Smarty version 2.6.31, created on 2019-05-31 12:26:42
          compiled from index.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'html_radios', 'index.tpl', 6, false),array('function', 'html_options', 'index.tpl', 14, false),array('modifier', 'escape', 'index.tpl', 8, false),)), $this); ?>
@@ -51,7 +51,7 @@ unset($_smarty_tpl_vars);
     foreach ($_from as $this->_tpl_vars['id'] => $this->_tpl_vars['i']):
 ?>
             <tr>
-                <td><?php echo $this->_tpl_vars['i']['id']; ?>
+                <td><?php echo $this->_tpl_vars['id']; ?>
 </td>
                 <td><a href="../index.php?open=<?php echo $this->_tpl_vars['id']; ?>
 "><?php echo ((is_array($_tmp=$this->_tpl_vars['i']['add_name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'UTF-8', 'htmlall') : smarty_modifier_escape($_tmp, 'UTF-8', 'htmlall')); ?>
@@ -60,7 +60,7 @@ unset($_smarty_tpl_vars);
 </td>
                 <td><?php echo ((is_array($_tmp=$this->_tpl_vars['i']['user_name'])) ? $this->_run_mod_handler('escape', true, $_tmp, 'UTF-8', 'htmlall') : smarty_modifier_escape($_tmp, 'UTF-8', 'htmlall')); ?>
 </td>
-                <td><a href="../index.php?delete=<?php echo $this->_tpl_vars['i']['id']; ?>
+                <td><a href="../index.php?delete=<?php echo $this->_tpl_vars['id']; ?>
 ">Удалить</a></td>
             </tr>
         <?php endforeach; endif; unset($_from); ?>

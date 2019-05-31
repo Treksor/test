@@ -38,7 +38,7 @@ function saveAds($var,$tablename,$db){
 function updateAds($var,$tablename,$db){
     $a=$var['id'];
     unset($var['id']);
-    $db->query("UPDATE `$tablename` SET ?a WHERE  `$tablename`.`id` ='$a'",$var);
+    $db->query("UPDATE `$tablename` SET ?a WHERE  `$tablename`.`id` =?",$var,$a);
 }
 
 function getAds($db){
@@ -48,7 +48,7 @@ function getAds($db){
 }
 
 function deleteAds($ad,$db){
-    $db->select("DELETE FROM `adds` WHERE `adds`.`id`=$ad[id]");
+    $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?",$ad['id']);
 }
 
 function prepareDataForSave($a){
