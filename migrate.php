@@ -2,18 +2,21 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display errors', 1);
 
-function create($link,$cities,$categories){
-    mysqli_query($link,'CREATE TABLE `cities` (
+$project_root=$_SERVER['DOCUMENT_ROOT'];
+require_once $project_root."/dbsimple/config.php";
+require_once $project_root."/dbsimple/DbSimple/Generic.php";
+function create($db,$cities,$categories){
+    $db->query('CREATE TABLE `cities` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `city` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL
-  ) ENGINE=\'MyISAM\' COLLATE \'utf8_general_ci\'') or die('города не создались'.mysqli_error($link));
+  ) ENGINE=\'innoDB\' COLLATE \'utf8_general_ci\'');
 
-    mysqli_query($link,'CREATE TABLE `categories` (
+    $db->query('CREATE TABLE `categories` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `category` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL
-) ENGINE=\'MyISAM\' COLLATE \'utf8_general_ci\'') or die('категории не создались' . mysqli_error($link));
+) ENGINE=\'innoDB\' COLLATE \'utf8_general_ci\'');
 
-    mysqli_query($link,'CREATE TABLE `adds` (
+    $db->query('CREATE TABLE `adds` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `status` enum(\'person\', \'company\') COLLATE \'utf8_general_ci\' NOT NULL,
   `user_name` varchar(40) COLLATE \'utf8_general_ci\' NOT NULL,
@@ -25,16 +28,26 @@ function create($link,$cities,$categories){
   `add_name` varchar(50) COLLATE \'utf8_general_ci\' NOT NULL,
   `add_description` text COLLATE \'utf8_general_ci\' NOT NULL,
   `price` DECIMAL(10,2) NOT NULL
-) ENGINE=\'MyISAM\' COLLATE \'utf8_general_ci\';') or die('шаблон объявы не создался' . mysqli_error($link));
+) ENGINE=\'innoDB\' COLLATE \'utf8_general_ci\';');
+
     foreach ($cities as $value){
-        mysqli_query($link,"INSERT INTO `cities` (`city`)
-VALUES ('$value');");
+        $db->query("INSERT INTO `cities` (`city`) VALUES ('$value');");
     }
 
     foreach ($categories as $value){
-        mysqli_query($link,"INSERT INTO `categories` (`category`)
-VALUES ('$value');");
+        $db->query("INSERT INTO `categories` (`category`) VALUES ('$value');");
     }
+}
+
+function databaseErrorHandler($message, $info)
+{
+    // Если использовалась @, ничего не делать.
+    if (!error_reporting()) return;
+    // Выводим подробную информацию об ошибке.
+    echo "SQL Error: $message<br><pre>";
+    print_r($info);
+    echo "</pre>";
+    exit();
 }
 
 function savedata($var,$file='./temp/data.txt'){
@@ -47,21 +60,22 @@ $cities = array('Выбери место жительства','Новосиби
 $categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна','Телега говна с горкой');
 
 if (isset($_POST['submit'])){
-    $link=mysqli_connect($_POST['host'],$_POST['user'],$_POST['pass']) or die('нет соединения с сервером'.mysqli_error($link));
-    if (!mysqli_select_db($link,$_POST['dbname'])){
-        mysqli_query($link,"CREATE DATABASE `$_POST[dbname]` COLLATE 'utf8_general_ci'") or die ('не могу создать'.mysqli_error($link));
-        $link=mysqli_connect($_POST['host'],$_POST['user'],$_POST['pass'],$_POST['dbname']);
-        create($link,$cities,$categories);
+    $db = DbSimple_Generic::connect("mysqli://$_POST[user]:$_POST[pass]@$_POST[host]/");
+//    $db->setErrorHandler('databaseErrorHandler');
+    if ($db->query("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$_POST[dbname]'")){
+        $db->query("DROP DATABASE $_POST[dbname]");
+        $db->query("CREATE DATABASE `$_POST[dbname]` COLLATE 'utf8_general_ci'");
+        $db->query("USE $_POST[dbname]");
     }else{
-        mysqli_query($link,"DROP DATABASE $_POST[dbname]");
-        mysqli_query($link,"CREATE DATABASE `$_POST[dbname]` COLLATE 'utf8_general_ci'") or die ('не могу создать заного'.mysqli_error($link));
-        $link=mysqli_connect($_POST['host'],$_POST['user'],$_POST['pass'],$_POST['dbname']);
-        create($link,$cities,$categories);
+        $db->query("CREATE DATABASE `$_POST[dbname]` COLLATE 'utf8_general_ci'");
+        $db->query("USE $_POST[dbname]");
     }
+    create($db,$cities,$categories);
     $data=serialize($_POST);
     savedata($data);
     header('location: ./index.php');
 }
+
 
 ?>
 

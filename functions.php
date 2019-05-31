@@ -5,75 +5,50 @@ function connect_db(){
     $logininfo=fread($data,filesize($file));
     $logininfo=unserialize($logininfo);
     fclose($data);
-    $link = mysqli_connect($logininfo['host'],$logininfo['user'],$logininfo['pass']) or die('нет соединения с сервером'.mysqli_error($link));
-    mysqli_select_db($link,$logininfo['dbname']) or die ('Нет такой бд.<a href="migrate.php"> Создать?');
-    return $link;
-}
-
-function list_options($col,$table,$link){
-    $output=array();
-    $result=mysqli_query($link,"select * from $table");
-    while ($row=mysqli_fetch_assoc($result)){
-        $output[$row['id']]=$row[$col];
+    $db = DbSimple_Generic::connect("mysqli://$logininfo[user]:$logininfo[pass]@$logininfo[host]/");
+    if ($db->query("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$logininfo[dbname]'")){
+        $db->query("USE $logininfo[dbname]");
+    }else{
+        die ('Нет такой бд.<a href="migrate.php"> Создать?');
     }
-    mysqli_free_result($result);
-    return $output;
+
+    return $db;
 }
 
-function saveAds($var,$tablename,$link){
-//    $keys="`".implode('`,`',array_keys($var))."`";
-//    $vals="'".implode("','",array_values($var))."'";
-    $stmt = mysqli_prepare($link, "INSERT INTO `$tablename` (status,user_name,user_email,checkbox,phone_number,
-    city,category,add_name,add_description,price) VALUES (?,?,?,?,?,?,?,?,?,?)");
-        mysqli_stmt_bind_param($stmt,'sssisiissd',$var['status'],$var['user_name'],$var['user_email'],
-            $var['checkbox'],$var['phone_number'],$var['city'],$var['category'],$var['add_name'],$var['add_description'],$var['price']);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_close($stmt);
+function databaseErrorHandler($message, $info)
+{
+    // Если использовалась @, ничего не делать.
+    if (!error_reporting()) return;
+    // Выводим подробную информацию об ошибке.
+    echo "SQL Error: $message<br><pre>";
+    print_r($info);
+    echo "</pre>";
+    exit();
 }
 
-function updateAds($var,$tablename,$link){
+function list_options($col,$table,$db){
+    $result=$db->selectCol("SELECT $col FROM $table");
+    return $result;
+}
+
+function saveAds($var,$tablename,$db){
+    $db->query("INSERT INTO `$tablename` (?#) VALUES (?a)",array_keys($var),array_values($var));
+}
+
+function updateAds($var,$tablename,$db){
     $a=$var['id'];
     unset($var['id']);
-    $stmt = mysqli_prepare($link,"UPDATE  `$tablename` SET status=?,user_name=?,user_email=?,checkbox=?,phone_number=?,
-    city=?,category=?,add_name=?,add_description=?,price=? WHERE  `$tablename`.`id` ='$a';");
-    mysqli_stmt_bind_param($stmt,'sssisiissd',$var['status'],$var['user_name'],$var['user_email'],
-        $var['checkbox'],$var['phone_number'],$var['city'],$var['category'],$var['add_name'],$var['add_description'],$var['price']);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
+    $db->query("UPDATE `$tablename` SET ?a WHERE  `$tablename`.`id` ='$a'",$var);
 }
 
-//function saveAds($var){
-//    $keys="`".implode('`,`',array_map('mysql_real_escape_string',array_keys($var)))."`";
-//    $keys="`".implode('`,`',array_keys($var))."`";
-//    $vals="'".implode("','",array_values($var))."'";
-//    $vals="'".implode("','",array_map('mysql_real_escape_string',array_values($var)))."'";
-//    mysql_query("INSERT INTO `adds` ($keys) VALUES ($vals)") or die(''.mysql_error());
-//}
-//
-//function updateAds($var,$tablename){
-//    $a=$var['id'];
-//    unset($var['id']);
-//    $keys=array_map('mysql_real_escape_string',array_keys($var));
-//    $vals=array_map('mysql_real_escape_string',array_values($var));
-//    for($i = 0, $length=count($keys); $i < $length; ++$i) {
-//        $pair[]="`$keys[$i]`='$vals[$i]'";
-//    }
-//    $pair=implode(',',$pair);
-//    mysql_query("UPDATE  `$tablename` SET $pair WHERE  `$tablename`.`id` ='$a';") or die('изменения не внесены' . mysql_error());
-//}
-
-function getAds($link){
-    $output=array();
-    $result = mysqli_query($link,"SELECT * FROM adds");
-    while ($row=mysqli_fetch_assoc($result)){
-        $output[$row['id']]=$row;
-    }
-    mysqli_free_result($result);
-    return $output;
+function getAds($db){
+    $result = $db->select("SELECT * FROM adds");
+    $db->setErrorHandler('databaseErrorHandler');
+    return $result;
 }
 
-function deleteAds($ad,$link){
-    mysqli_query($link,"DELETE FROM `adds` WHERE `adds`.`id`=$ad[id]");
+function deleteAds($ad,$db){
+    $db->select("DELETE FROM `adds` WHERE `adds`.`id`=$ad[id]");
 }
 
 function prepareDataForSave($a){
@@ -100,35 +75,3 @@ function prepareDataForUpdate($a){
 }
 
 
-//function mysqlcheck($var){
-//    $var1=array();
-//    foreach ($var as $key=>$value){
-//        $key=mysql_real_escape_string($key);
-//        $value=mysql_real_escape_string($value);
-//        $var1[$key]=$value;
-//    }
-//    return $var1;
-//}
-//function updateAds($var){
-//    mysql_query("UPDATE  `adds` SET
-//`status` = '$var[status]',
-//`user_name` =  '$var[user_name]',
-//`user_email` = '$var[user_email]',
-//`phone_number` =  '$var[phone_number]',
-//`city` =  '$var[city]',
-//`category` =  '$var[category]',
-//`add_name` =  '$var[add_name]',
-//`add_description` =  '$var[add_description]',
-//`price` =  '$var[price]'
-// WHERE  `adds`.`id` ='$var[id]';")or die('изменения не внесены' . mysql_error());
-//}
-//function saveAds($var){
-//    mysql_query("INSERT INTO `adds` (`status`, `user_name`, `user_email`, `checkbox`, `phone_number`, `city`, `category`, `add_name`, `add_description`, `price`)
-//VALUES ('$var[status]', '$var[user_name]', '$var[user_email]', '$var[checkbox]', '$var[phone_number]',
-//'$var[city]', '$var[category]', '$var[add_name]', '$var[add_description]', '$var[price]');");
-////}
-//
-//function TableExists($table) {
-//    $res = mysql_query("SHOW TABLES LIKE '$table'");
-//    return mysql_num_rows($res) > 0;
-//}

@@ -2,10 +2,13 @@
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 ini_set('display errors', 1);
 
-include('functions.php');
-$link=connect_db();
-phpinfo();
 $project_root=$_SERVER['DOCUMENT_ROOT'];
+require_once $project_root."/dbsimple/config.php";
+require_once $project_root."/dbsimple/DbSimple/Generic.php";
+include('functions.php');
+
+$db=connect_db();
+
 $smarty_dir=$project_root.'/smarty/';
 require($smarty_dir.'libs/Smarty.class.php');
 $smarty = new Smarty();
@@ -18,8 +21,8 @@ $smarty->compile_dir = $smarty_dir.'templates_c';
 $smarty->cache_dir = $smarty_dir.'cache';
 $smarty->config_dir = $smarty_dir.'configs';
 
-$cities=list_options('city','cities',$link);
-$categories=list_options('category','categories',$link);
+$cities=list_options('city','cities',$db);
+$categories=list_options('category','categories',$db);
 
 $item = array(
     'status' => 'person',
@@ -36,7 +39,7 @@ $item = array(
     'id'=>''
 );
 
-$allData=getAds($link);
+$allData=getAds($db);
 
 if (isset($_GET['open'])) {
     $item = $allData[$_GET['open']];
@@ -44,18 +47,18 @@ if (isset($_GET['open'])) {
 
 if (isset($_GET['delete'])) {
     $item=$allData[$_GET['delete']];
-    deleteAds($item,$link);
+    deleteAds($item,$db);
     header('location: ./index.php');
 }
 
 if (isset($_POST['submit'])){
     if (is_numeric($item['id'])){
         $itemtosave=prepareDataForUpdate($_POST);
-        updateAds($itemtosave,'adds',$link);
+        updateAds($itemtosave,'adds',$db);
     }
     else {
         $itemtosave=prepareDataForSave($_POST);
-        saveAds($itemtosave,'adds',$link);
+        saveAds($itemtosave,'adds',$db);
     }
     header('location: ./index.php');
 }

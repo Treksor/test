@@ -31,11 +31,11 @@
     {if !empty($data)}
         {foreach from=$data key=id item=i}
             <tr>
-                <td>{$id}</td>
+                <td>{$i.id}</td>
                 <td><a href="../index.php?open={$id}">{$i.add_name|escape:'UTF-8':'htmlall'}</a></td>
                 <td>{$i.price}</td>
                 <td>{$i.user_name|escape:'UTF-8':'htmlall'}</td>
-                <td><a href="../index.php?delete={$id}">Удалить</a></td>
+                <td><a href="../index.php?delete={$i.id}">Удалить</a></td>
             </tr>
         {/foreach}
     {/if}
