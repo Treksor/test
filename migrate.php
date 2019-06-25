@@ -63,7 +63,7 @@ if (isset($_POST['submit'])){
     $db = DbSimple_Generic::connect("mysqli://$_POST[user]:$_POST[pass]@$_POST[host]/");
 //    $db->setErrorHandler('databaseErrorHandler');
     if ($db->query("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$_POST[dbname]'")){
-        $db->query("DROP DATABASE $_POST[dbname]");
+        $db->query("DROP DATABASE `$_POST[dbname]` COLLATE 'utf8_general_ci'");
         $db->query("CREATE DATABASE `$_POST[dbname]` COLLATE 'utf8_general_ci'");
         $db->query("USE $_POST[dbname]");
     }else{
