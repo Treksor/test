@@ -1,7 +1,7 @@
 {include file='header.tpl'}
 
 <link rel="stylesheet" type="text/css" href=styles.css>
-<form method="POST">
+<form method="POST" action="../index.php">
     <input type="hidden" name="id" value="{$item->id}">
     {html_radios name="status" options=$status selected=$item->status}
     <br>
@@ -15,7 +15,7 @@
     <p><label class="left-label" for="category">Категория</label>
     <p>{html_options name=category options=$category selected=$item->category}
 
-    <p><label class="left-label" for="add_name">Название объявления </label><input name="add_name" type="text" id="add_name" value="{$item->add_name|escape:'UTF-8':'htmlall'}">
+    <p><label class="left-label" for="add_name">Название объявления </label><input name="add_name" type="text" required  id="add_name" value="{$item->add_name|escape:'UTF-8':'htmlall'}">
     <p><label class="left-label" for="add_description">Описание товара</label><textarea name="add_description" id="add_description" style="resize:none;">{$item->add_description|escape:'UTF-8':'htmlall'}</textarea>
     <p><label class="left-label" for="price">Цена </label><input name="price" type="text" size="5" id="price" value="{$item->price}">руб.
     <p><input type="submit" name="submit" value="submit">

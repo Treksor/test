@@ -5,34 +5,21 @@ ini_set('display errors', 1);
 //require_once $project_root."/dbsimple/config.php";
 //require_once $project_root."/dbsimple/DbSimple/Generic.php";
 
-class database
-{
-    function connectDB()
-    {
-        $file='./temp/data.txt';
-        $data=fopen($file,'r');
-        $logininfo=fread($data,filesize($file));
-        $logininfo=unserialize($logininfo);
-        fclose($data);
-        $db = DbSimple_Generic::connect("mysqli://$logininfo[user]:$logininfo[pass]@$logininfo[host]/");
-        if ($db->query("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$logininfo[dbname]'")){
-            $db->query("USE $logininfo[dbname]");
-        }else{
-            die ('Нет такой бд.<a href="migrate.php"> Создать?');
-        }
-        return $db;
-    }
-
-}
-
-class newAd
+class NewAd
 {
     public $status,$user_name,$user_email,$checkbox,$phone_number,$city,$category,$add_name,$add_description,$price;
     public $id;
 
     function __construct($ad)
     {
-        $this->status=$ad['status'];
+        if (!empty($ad['status']))
+        {
+            $this->status = $ad['status'];
+        }
+        else
+            {
+                $this->status='person';
+            }
         $this->user_name=$ad['user_name'];
         $this->user_email=$ad['user_email'];
 
@@ -56,38 +43,44 @@ class newAd
 
     public static function getAds()
     {
-        $db = database::connectDB();
+        $db = Database::connectDB();
         $result = $db->select("SELECT * FROM adds");
         foreach ($result as $ad)
         {
-            $a[]=new newAd($ad);
+            $a[$ad['id']]=new NewAd($ad);
         }
         return $a;
     }
 
     public static function getOptions($col,$table)
     {
-        $db = database::connectDB();
+        $db = Database::connectDB();
         $result=$db->selectCol("SELECT $col FROM $table");
         return $result;
     }
 
     public function saveAd($tablename)
     {
-        $db = database::connectDB();
+        $db = Database::connectDB();
         $a=get_object_vars($this);
         $db->query("INSERT INTO `$tablename` (?#) VALUES (?a)",array_keys($a),array_values($a));
     }
 
-    public function updateAd($tablename)
+    public function updateAd($data,$tablename)
     {
-        $db = database::connectDB();
+        foreach ($this as $key=>$value)
+        {
+            if (array_key_exists($key,$data)){
+                $this->$key=$data[$key];
+            }
+        }
+        $db = Database::connectDB();
         $ad=get_object_vars($this);
         $db->query("UPDATE `$tablename` SET ?a WHERE  `$tablename`.`id` =?",$ad,$this->id);
     }
 
     public function deleteAd(){
-        $db = database::connectDB();
+        $db = Database::connectDB();
         $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?",$this->id);
     }
 }

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2019-06-25 09:21:25
+<?php /* Smarty version 2.6.31, created on 2019-06-25 14:35:08
          compiled from index.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('function', 'html_radios', 'index.tpl', 6, false),array('function', 'html_options', 'index.tpl', 14, false),array('modifier', 'escape', 'index.tpl', 8, false),)), $this); ?>
@@ -9,7 +9,7 @@ unset($_smarty_tpl_vars);
  ?>
 
 <link rel="stylesheet" type="text/css" href=styles.css>
-<form method="POST">
+<form method="POST" action="../index.php">
     <input type="hidden" name="id" value="<?php echo $this->_tpl_vars['item']->id; ?>
 ">
     <?php echo smarty_function_html_radios(array('name' => 'status','options' => $this->_tpl_vars['status'],'selected' => $this->_tpl_vars['item']->status), $this);?>
@@ -30,7 +30,7 @@ unset($_smarty_tpl_vars);
     <p><?php echo smarty_function_html_options(array('name' => 'category','options' => $this->_tpl_vars['category'],'selected' => $this->_tpl_vars['item']->category), $this);?>
 
 
-    <p><label class="left-label" for="add_name">Название объявления </label><input name="add_name" type="text" id="add_name" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['item']->add_name)) ? $this->_run_mod_handler('escape', true, $_tmp, 'UTF-8', 'htmlall') : smarty_modifier_escape($_tmp, 'UTF-8', 'htmlall')); ?>
+    <p><label class="left-label" for="add_name">Название объявления </label><input name="add_name" type="text" required  id="add_name" value="<?php echo ((is_array($_tmp=$this->_tpl_vars['item']->add_name)) ? $this->_run_mod_handler('escape', true, $_tmp, 'UTF-8', 'htmlall') : smarty_modifier_escape($_tmp, 'UTF-8', 'htmlall')); ?>
 ">
     <p><label class="left-label" for="add_description">Описание товара</label><textarea name="add_description" id="add_description" style="resize:none;"><?php echo ((is_array($_tmp=$this->_tpl_vars['item']->add_description)) ? $this->_run_mod_handler('escape', true, $_tmp, 'UTF-8', 'htmlall') : smarty_modifier_escape($_tmp, 'UTF-8', 'htmlall')); ?>
 </textarea>
