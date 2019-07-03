@@ -3,6 +3,7 @@
 <link rel="stylesheet" type="text/css" href=styles.css>
 <form method="POST" action="../index.php">
     <input type="hidden" name="id" value="{$item->id}">
+    <input type="hidden" name="checkbox" value="0">
     {html_radios name="status" options=$status selected=$item->status}
     <br>
     <p><label class="left-label" for="user_name">Ваше имя</label> <input name="user_name" type="text" id="user_name" value="{$item->user_name|escape:'UTF-8':'htmlall'}">

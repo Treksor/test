@@ -56,8 +56,8 @@ function savedata($var,$file='./temp/data.txt'){
     fclose($data);
 }
 
-$cities = array('Выбери место жительства','Новосибирск','Луна','Параша','Жопа','Нибиру');
-$categories=array('Что продаемс?','Космос','Гавно','Еще гавно','Еще больше гавна','Телега говна с горкой');
+$cities = array('Выбери место жительства','Новосибирск','Луна','Марс','Титан','Нибиру');
+$categories=array('Что продаемс?','Бакалея','Девайсы','Бухло','Детское','Книги');
 
 if (isset($_POST['submit'])){
     $db = DbSimple_Generic::connect("mysqli://$_POST[user]:$_POST[pass]@$_POST[host]/");

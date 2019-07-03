@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.31, created on 2019-06-25 14:35:08
+<?php /* Smarty version 2.6.31, created on 2019-06-28 09:22:15
          compiled from index.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'html_radios', 'index.tpl', 6, false),array('function', 'html_options', 'index.tpl', 14, false),array('modifier', 'escape', 'index.tpl', 8, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'html_radios', 'index.tpl', 7, false),array('function', 'html_options', 'index.tpl', 15, false),array('modifier', 'escape', 'index.tpl', 9, false),)), $this); ?>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => 'header.tpl', 'smarty_include_vars' => array()));
 $this->_tpl_vars = $_smarty_tpl_vars;
@@ -12,6 +12,7 @@ unset($_smarty_tpl_vars);
 <form method="POST" action="../index.php">
     <input type="hidden" name="id" value="<?php echo $this->_tpl_vars['item']->id; ?>
 ">
+    <input type="hidden" name="checkbox" value="0">
     <?php echo smarty_function_html_radios(array('name' => 'status','options' => $this->_tpl_vars['status'],'selected' => $this->_tpl_vars['item']->status), $this);?>
 
     <br>
