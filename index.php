@@ -20,53 +20,52 @@ $smarty->compile_dir = $smarty_dir.'templates_c';
 $smarty->cache_dir = $smarty_dir.'cache';
 $smarty->config_dir = $smarty_dir.'configs';
 
-$cities=Options_towns::getOptions('city','cities');
-$categories=Options_categories::getOptions('category','categories');
+$cities=OptionsTowns::getOptions('city','cities');
+$categories=OptionsCategories::getOptions('category','categories');
 
-if (isset($_GET['open']))
+
+if (isset($_POST['submit']))
 {
-//    $item = $allData[$_GET['open']];
-    $item=NewAd::findAd($_GET['open']);
+    $ad=AdFactory::createAd($_POST,$_POST['status']);
+    $ad->saveAd();
+//    if (is_numeric($_POST['id']))
+//    {
+////        $item=$allData[$_POST['id']];
+//        $item=NewAd::findAd($_POST['id']);
+//        $item->updateAd($_POST,'adds');
+//        $item = new NewAd();
+//    }
+//    else
+//        {
+//            $ad= new NewAd($_POST);
+//            $ad->saveAd('adds');
+//            $item = new NewAd();
+//        }
 }
 elseif (isset($_GET['delete']))
 {
-//    $item=$allData[$_GET['delete']];
-    $item=NewAd::findAd($_GET['delete']);
-    $item->deleteAd();
-    $item = new NewAd();
+    NewAd::findAd($_GET['delete'])->deleteAd();
 }
-elseif (isset($_POST['submit']))
+elseif (isset($_GET['open']))
 {
-    if (is_numeric($_POST['id']))
-    {
-//        $item=$allData[$_POST['id']];
-        $item=NewAd::findAd($_POST['id']);
-        $item->updateAd($_POST,'adds');
-        $item = new NewAd();
-    }
-    else
-        {
-            $ad= new NewAd($_POST);
-            $ad->saveAd('adds');
-            $item = new NewAd();
-        }
+    $item=NewAd::findAd($_GET['open']);
 }
 
 if (!isset($item) || !($item instanceof NewAd))
 {
-    $item = new NewAd();
+    $item = AdFactory::createAd(array(),'person');
 }
-
-$allData=NewAd::getAds();
 
 $smarty->assign('status',array('person'=>'Частное лицо',
                                           'company'=>'Компания'));
 $smarty->assign('city',$cities);
 $smarty->assign('category',$categories);
 $smarty->assign('item',$item);
-$smarty->assign('data',$allData);
 
-$smarty->display('index.tpl');
+$main=AdsStore::instance();
+$main->getAllAdsFromDb();
+$main->outputAds();
+$smarty->display('oop.tpl');
 
 ?>
 

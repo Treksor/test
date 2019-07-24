@@ -5,7 +5,7 @@
 //require_once $project_root . "/dbsimple/config.php";
 //require_once $project_root . "/dbsimple/DbSimple/Generic.php";
 //namespace classes;
-class DB_connect
+class DBconnect
 {
     public static function connectDB()
     {

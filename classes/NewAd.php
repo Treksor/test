@@ -2,7 +2,8 @@
 //namespace classes;
 class NewAd
 {
-    public $status='person',$user_name,$user_email,$checkbox=1,$phone_number,$city,$category,$add_name,$add_description,$price;
+    public $user_name,$user_email,$checkbox=1,$phone_number,$city,$category,$add_name,$add_description,$price;
+    public $status='person';
     public $id;
 
     function __construct($ad=array())
@@ -37,31 +38,61 @@ class NewAd
 //        $this->id=$ad['id'];
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getAddName()
+    {
+        return $this->add_name;
+    }
+
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+       public function getUserName()
+    {
+        return $this->user_name;
+    }
+
+        public function getAddDescription()
+    {
+        return $this->add_description;
+    }
+
     public static function findAd($id)
     {
-        $db = DB_connect::connectDB();
+        $db = DBconnect::connectDB();
         $result=$db->selectrow('SELECT * FROM adds WHERE id=?', $id);
-        $ad=new NewAd($result);
+        $ad=AdFactory::createAd($result,$result['status']);
         return $ad;
 
     }
 
-    public static function getAds()
-    {
-        $db = DB_connect::connectDB();
-        $result = $db->select("SELECT * FROM adds");
-        foreach ($result as $ad)
-        {
-            $a[$ad['id']]=new NewAd($ad);
-        }
-        return $a;
-    }
+//    public static function getAds()
+//    {
+//        $db = DBconnect::connectDB();
+//        $result = $db->select("SELECT * FROM adds");
+//        foreach ($result as $ad)
+//        {
+//            $a[$ad['id']]=new NewAd($ad);
+//        }
+//        return $a;
+//    }
 
     public function fillObject($data)
     {
         if (array_key_exists('phone_number',$data))
         {
             $data['phone_number']=preg_replace('~\D+~','',$data['phone_number']);
+        }
+
+        if (isset($data['status']))
+        {
+            unset($data['status']);
         }
 
         foreach ($data as $key=>$value)
@@ -72,24 +103,24 @@ class NewAd
         }
     }
 
-    public function saveAd($tablename)
+    public function saveAd()
     {
-        $db = DB_connect::connectDB();
+        $db = DBconnect::connectDB();
         $a=get_object_vars($this);
-        $db->query("INSERT INTO `$tablename` (?#) VALUES (?a)",array_keys($a),array_values($a));
+        $db->query("REPLACE INTO `adds` (?#) VALUES (?a)",array_keys($a),array_values($a));
     }
 
-    public function updateAd($data,$tablename)
-    {
-
-        NewAd::fillObject($data);
-        $db = DB_connect::connectDB();
-        $ad=get_object_vars($this);
-        $db->query("UPDATE `$tablename` SET ?a WHERE  `$tablename`.`id` =?",$ad,$this->id);
-    }
+//    public function updateAd($data,$tablename)
+//    {
+//
+//        NewAd::fillObject($data);
+//        $db = DBconnect::connectDB();
+//        $ad=get_object_vars($this);
+//        $db->query("UPDATE `$tablename` SET ?a WHERE  `$tablename`.`id` =?",$ad,$this->id);
+//    }
 
     public function deleteAd(){
-        $db = DB_connect::connectDB();
+        $db = DBconnect::connectDB();
         $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?",$this->id);
     }
 }
