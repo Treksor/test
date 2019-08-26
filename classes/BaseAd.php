@@ -120,17 +120,17 @@ class BaseAd
 //    }
 
     public function deleteAd(){
-        switch($_GET['action']){
-            case "delete":
-                $db = DBconnect::connectDB();
-                $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?d",$this->id);
-                echo "Товар ".$this->id." удален";
-                break;
-            default:
-                break;
-        }
-//        $db = DBconnect::connectDB();
-//        $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?",$this->id);
+//        switch($_GET['action']){
+//            case "delete":
+//                $db = DBconnect::connectDB();
+//                $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?d",$this->id);
+//                echo "Товар ".$this->id." удален";
+//                break;
+//            default:
+//                break;
+//        }
+        $db = DBconnect::connectDB();
+        $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?",$this->id);
     }
 }
 

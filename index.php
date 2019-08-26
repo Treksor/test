@@ -42,10 +42,10 @@ if (isset($_POST['submit']))
 //            $item = new BaseAd();
 //        }
 }
-//elseif (isset($_GET['delete']))
-//{
-//    BaseAd::findAd($_GET['delete'])->deleteAd();
-//}
+elseif (isset($_GET['delete']))
+{
+    BaseAd::findAd($_GET['delete'])->deleteAd();
+}
 elseif (isset($_GET['open']))
 {
     $item=BaseAd::findAd($_GET['open']);
