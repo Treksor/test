@@ -1,6 +1,6 @@
 <?php
 //namespace classes;
-class NewAd
+class BaseAd
 {
     public $user_name,$user_email,$checkbox=1,$phone_number,$city,$category,$add_name,$add_description,$price;
     public $status='person';
@@ -8,7 +8,7 @@ class NewAd
 
     function __construct($ad=array())
     {
-        NewAd::fillObject($ad);
+        BaseAd::fillObject($ad);
 ////        if (!empty($ad['status']))
 ////        {
 //            $this->status = $ad['status'];
@@ -78,7 +78,7 @@ class NewAd
 //        $result = $db->select("SELECT * FROM adds");
 //        foreach ($result as $ad)
 //        {
-//            $a[$ad['id']]=new NewAd($ad);
+//            $a[$ad['id']]=new BaseAd($ad);
 //        }
 //        return $a;
 //    }
@@ -113,15 +113,24 @@ class NewAd
 //    public function updateAd($data,$tablename)
 //    {
 //
-//        NewAd::fillObject($data);
+//        BaseAd::fillObject($data);
 //        $db = DBconnect::connectDB();
 //        $ad=get_object_vars($this);
 //        $db->query("UPDATE `$tablename` SET ?a WHERE  `$tablename`.`id` =?",$ad,$this->id);
 //    }
 
     public function deleteAd(){
-        $db = DBconnect::connectDB();
-        $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?",$this->id);
+        switch($_GET['action']){
+            case "delete":
+                $db = DBconnect::connectDB();
+                $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?d",$this->id);
+                echo "Товар ".$this->id." удален";
+                break;
+            default:
+                break;
+        }
+//        $db = DBconnect::connectDB();
+//        $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?",$this->id);
     }
 }
 

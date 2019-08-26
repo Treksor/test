@@ -1,5 +1,5 @@
 <?php
-class PersonAd extends NewAd
+class PersonAd extends BaseAd
 {
     public $status = 'person';
 

@@ -20,7 +20,7 @@ class AdsStore
 //        return $result;
 //    }
 
-    public function addAds(NewAd $ad)
+    public function addAds(BaseAd $ad)
     {
         if (!($this instanceof AdsStore))
         {

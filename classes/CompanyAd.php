@@ -1,5 +1,5 @@
 <?php
-class CompanyAd extends NewAd
+class CompanyAd extends BaseAd
 {
     public $status = 'company';
 

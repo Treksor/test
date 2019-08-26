@@ -13,7 +13,7 @@ require($smarty_dir.'libs/Smarty.class.php');
 $smarty = new Smarty();
 
 $smarty->compile_check = true;
-$smarty->debugging = true;
+$smarty->debugging = false;
 
 $smarty->template_dir = $smarty_dir.'templates';
 $smarty->compile_dir = $smarty_dir.'templates_c';
@@ -31,27 +31,27 @@ if (isset($_POST['submit']))
 //    if (is_numeric($_POST['id']))
 //    {
 ////        $item=$allData[$_POST['id']];
-//        $item=NewAd::findAd($_POST['id']);
+//        $item=BaseAd::findAd($_POST['id']);
 //        $item->updateAd($_POST,'adds');
-//        $item = new NewAd();
+//        $item = new BaseAd();
 //    }
 //    else
 //        {
-//            $ad= new NewAd($_POST);
+//            $ad= new BaseAd($_POST);
 //            $ad->saveAd('adds');
-//            $item = new NewAd();
+//            $item = new BaseAd();
 //        }
 }
-elseif (isset($_GET['delete']))
-{
-    NewAd::findAd($_GET['delete'])->deleteAd();
-}
+//elseif (isset($_GET['delete']))
+//{
+//    BaseAd::findAd($_GET['delete'])->deleteAd();
+//}
 elseif (isset($_GET['open']))
 {
-    $item=NewAd::findAd($_GET['open']);
+    $item=BaseAd::findAd($_GET['open']);
 }
 
-if (!isset($item) || !($item instanceof NewAd))
+if (!isset($item) || !($item instanceof BaseAd))
 {
     $item = AdFactory::createAd(array(),'person');
 }
@@ -66,6 +66,7 @@ $main=AdsStore::instance();
 $main->getAllAdsFromDb();
 $main->outputAds();
 $smarty->display('oop.tpl');
+
 
 ?>
 
