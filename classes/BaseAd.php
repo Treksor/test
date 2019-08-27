@@ -124,7 +124,7 @@ class BaseAd
             case "delete":
                 $db = DBconnect::connectDB();
                 $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?d",$this->id);
-                echo "Товар ".$this->id." удален";
+//                echo "Товар ".$this->id." удален";
                 break;
             default:
                 break;

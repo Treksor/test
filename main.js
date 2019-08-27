@@ -5,9 +5,10 @@ $(document).ready(function () {
         var id = tr.children('td').first().html();
         $('#container').load('index.php?action=delete&id=' + id,
             function () {
-                tr.fadeOut('slow', function () {
+                    $('#container').html('<div class="alert alert-warning">ID#'+id+' Deleted.</div>')
+                    tr.fadeOut('slow', function () {
                     $(this).remove();
-                })
+                });
             }
         );
     });
