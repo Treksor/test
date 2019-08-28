@@ -119,18 +119,14 @@ class BaseAd
 //        $db->query("UPDATE `$tablename` SET ?a WHERE  `$tablename`.`id` =?",$ad,$this->id);
 //    }
 
-    public function deleteAd(){
-        switch($_GET['action']){
-            case "delete":
-                $db = DBconnect::connectDB();
-                $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?d",$this->id);
-//                echo "Товар ".$this->id." удален";
-                break;
-            default:
-                break;
-        }
+    public function deleteAd()
+    {
+        $db = DBconnect::connectDB();
+        $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?d", $this->id);
+        echo "<div class=\"alert alert-warning\">ID# $this->id Deleted.</div>";
+    }
 //        $db = DBconnect::connectDB();
 //        $db->select("DELETE FROM `adds` WHERE `adds`.`id`=?",$this->id);
-    }
+
 }
 

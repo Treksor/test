@@ -1,7 +1,7 @@
 {include file='headerB.tpl'}
 <div class="row border">
 <div class="col-4 border">
-<form class="form-horizontal" method="POST">
+<form class="form-horizontal" method="POST" action="../index.php?action=submit">
     <input type="hidden" name="id" value="{$item->id}">
     <input type="hidden" name="checkbox" value="0">
     <div class="form-group ml-3" id="container"></div>

@@ -22,12 +22,12 @@ $smarty->config_dir = $smarty_dir.'configs';
 
 $cities=OptionsTowns::getOptions('city','cities');
 $categories=OptionsCategories::getOptions('category','categories');
+$action=isset($_REQUEST['action']) ? $_REQUEST['action']:"";
 
 
-if (isset($_POST['submit']))
-{
-    $ad=AdFactory::createAd($_POST,$_POST['status']);
-    $ad->saveAd();
+//if (isset($_POST['submit'])) {
+//    $ad = AdFactory::createAd($_POST, $_POST['status']);
+//    $ad->saveAd();
 //    if (is_numeric($_POST['id']))
 //    {
 ////        $item=$allData[$_POST['id']];
@@ -41,16 +41,32 @@ if (isset($_POST['submit']))
 //            $ad->saveAd('adds');
 //            $item = new BaseAd();
 //        }
-}
-elseif (isset($_GET['action']))
-{
-    BaseAd::findAd($_GET['id'])->deleteAd();
-    exit;
-}
-elseif (isset($_GET['open']))
-{
-    $item=BaseAd::findAd($_GET['open']);
-}
+//if (isset($_REQUEST['action'])) {
+    switch ($action) {
+        case "submit":
+            $ad = AdFactory::createAd($_POST, $_POST['status']);
+            $ad->saveAd();
+            break;
+        case "delete":
+            BaseAd::findAd($_GET['id'])->deleteAd();
+            exit;
+            break;
+        case "open":
+            $item = BaseAd::findAd($_GET['id']);
+            break;
+        default:
+            break;
+    }
+//}
+//elseif (isset($_GET['action']))
+//{
+//    BaseAd::findAd($_GET['id'])->deleteAd();
+//    exit;
+//}
+//elseif (isset($_GET['open']))
+//{
+//    $item=BaseAd::findAd($_GET['open']);
+//}
 
 if (!isset($item) || !($item instanceof BaseAd))
 {
